@@ -274,19 +274,55 @@
           </select>
           <div class="error-msg" aria-live="polite">Selecione o estado civil.</div>
         </div>
+
+        <div class="field">
+          <label id="segLblOcupacao">Ocupação profissional atual <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLblOcupacao" style="flex-wrap:wrap;">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="ocupacao" data-value="Assalariado(a) - CLT" style="min-width:47%;">Assalariado(a) - CLT</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="ocupacao" data-value="Autônomo(a)" style="min-width:47%;">Autônomo(a)</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="ocupacao" data-value="Profissional liberal" style="min-width:47%;">Profissional liberal</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="ocupacao" data-value="Empresário(a)" style="min-width:47%;">Empresário(a)</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="ocupacao" data-value="Funcionário(a) público(a)" style="min-width:47%;">Funcionário(a) público(a)</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="ocupacao" data-value="Aposentado(a)" style="min-width:47%;">Aposentado(a)</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="ocupacao" data-value="Sem ocupação atual" style="min-width:100%;">Sem ocupação atual</button>
+          </div>
+          <div class="error-msg" aria-live="polite">Selecione a ocupação profissional.</div>
+        </div>
+
+        <div class="divider"></div>
+        <p class="section-label" style="margin-bottom:12px;">Onde o veículo fica à noite</p>
+        <div class="field">
+          <label for="cepPernoite">CEP <span class="req">*</span></label>
+          <input type="text" id="cepPernoite" inputmode="numeric" placeholder="00000-000" maxlength="9">
+          <p class="hint" id="cepResultado" style="display:none;font-weight:600;color:var(--text);"></p>
+          <div class="error-msg" aria-live="polite">CEP inválido — use 8 dígitos.</div>
+        </div>
         <div class="row2">
           <div class="field">
-            <label for="cepPernoite">CEP de pernoite do veículo <span class="req">*</span></label>
-            <input type="text" id="cepPernoite" inputmode="numeric" placeholder="00000-000" maxlength="9">
-            <div class="hint">Onde o carro fica estacionado à noite.</div>
-            <p class="hint" id="cepResultado" style="display:none;font-weight:600;color:var(--text);"></p>
-            <div class="error-msg" aria-live="polite">CEP inválido — use 8 dígitos.</div>
+            <label for="enderecoNumero">Número <span class="req">*</span></label>
+            <input type="text" id="enderecoNumero" inputmode="numeric" placeholder="Ex.: 123">
+            <div class="error-msg" aria-live="polite">Informe o número.</div>
           </div>
           <div class="field">
-            <label for="seguradoTelefone">Telefone de contato <span class="req">*</span></label>
-            <input type="tel" id="seguradoTelefone" inputmode="numeric" placeholder="(11) 90000-0000" maxlength="15">
-            <div class="error-msg" aria-live="polite">Informe um telefone válido.</div>
+            <label for="enderecoComplemento">Complemento</label>
+            <input type="text" id="enderecoComplemento" placeholder="Apto, bloco... (opcional)">
           </div>
+        </div>
+        <div class="field">
+          <label id="segLblEstacionamento">Fica estacionado <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLblEstacionamento" style="flex-wrap:wrap;">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="estacionamento" data-value="Garagem própria (fechada)" style="min-width:100%;">Garagem própria (fechada)</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="estacionamento" data-value="Garagem coletiva/condomínio" style="min-width:100%;">Garagem coletiva/condomínio</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="estacionamento" data-value="Rua (sem garagem)" style="min-width:100%;">Rua (sem garagem)</button>
+          </div>
+          <div class="error-msg" aria-live="polite">Selecione onde o veículo fica estacionado.</div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="field">
+          <label for="seguradoTelefone">Telefone de contato <span class="req">*</span></label>
+          <input type="tel" id="seguradoTelefone" inputmode="numeric" placeholder="(11) 90000-0000" maxlength="15">
+          <div class="error-msg" aria-live="polite">Informe um telefone válido.</div>
         </div>
         <div class="field">
           <label for="seguradoEmail">E-mail de contato <span class="req">*</span></label>
@@ -298,7 +334,7 @@
       <!-- STEP 3: CONDUTOR PRINCIPAL -->
       <section class="step" data-step="3" hidden>
         <div class="step-title"><span class="step-num">3</span>Condutor Principal</div>
-        <p class="step-desc">É quem dirige o veículo com maior frequência. Se houver mais de um condutor, considere o mais jovem — isso influencia diretamente o preço do seguro.</p>
+        <p class="step-desc">É quem dirige o veículo com maior frequência. Se houver mais de uma pessoa, indique a mais jovem como condutor principal — isso influencia diretamente o preço do seguro, e essa pessoa precisa ter habilitação (CNH) regularizada.</p>
 
         <label class="check-row" style="margin-bottom:16px;">
           <input type="checkbox" id="condutorIgualSegurado" checked>
@@ -332,6 +368,17 @@
             </select>
             <div class="error-msg" aria-live="polite">Selecione o estado civil.</div>
           </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="field">
+          <label id="segLblCondutorJovem">O veículo é conduzido com frequência por alguém entre 18 e 25 anos? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLblCondutorJovem">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="condutorJovem" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="condutorJovem" data-value="Não">Não</button>
+          </div>
+          <p class="hint">Mesmo que não seja o condutor principal — seguradoras consideram isso na precificação.</p>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
       </section>
 
@@ -731,7 +778,7 @@
   els.veiculoPlaca && els.veiculoPlaca.addEventListener('input', function(){ this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,7); });
 
   // ---------- ViaCEP: preenche cidade/UF sozinho quando o CEP tem 8 dígitos ----------
-  var enderecoPernoite = null; // {cidade, uf, bairro} — vai junto no resumo se for encontrado
+  var enderecoPernoite = null; // {cidade, uf, bairro, logradouro} — vai junto no resumo se for encontrado
   var cepBuscaAtual = '';
   els.cepPernoite && els.cepPernoite.addEventListener('input', function(){
     var digits = onlyDigits(els.cepPernoite.value);
@@ -754,8 +801,8 @@
           els.cepResultado.style.display = 'block';
           return;
         }
-        enderecoPernoite = { cidade: data.localidade, uf: data.uf, bairro: data.bairro };
-        els.cepResultado.textContent = (data.bairro ? data.bairro + ', ' : '') + data.localidade + ' - ' + data.uf;
+        enderecoPernoite = { cidade: data.localidade, uf: data.uf, bairro: data.bairro, logradouro: data.logradouro };
+        els.cepResultado.textContent = (data.logradouro ? data.logradouro + ' — ' : '') + (data.bairro ? data.bairro + ', ' : '') + data.localidade + ' - ' + data.uf;
         els.cepResultado.style.color = 'var(--text)';
         els.cepResultado.style.display = 'block';
       })
@@ -789,6 +836,24 @@
   function fipeMostrarErro(msg){ els.fipeErro.textContent = msg; els.fipeErro.style.display = 'block'; }
   function fipeLimparErro(){ els.fipeErro.style.display = 'none'; }
 
+  // A fonte de dados da FIPE por trás da BrasilAPI é instável e devolve 429
+  // ("muitas requisições") com frequência, principalmente quando a pessoa
+  // clica em vários modelos seguidos rápido — mas isso é passageiro: na
+  // prática, tentar de novo depois de um instante quase sempre resolve.
+  // Por isso toda chamada da FIPE passa por aqui, que tenta de novo sozinho
+  // (com uma pausa cada vez maior) antes de mostrar qualquer erro pra pessoa.
+  function fipeFetch(url, tentativas){
+    tentativas = tentativas || 3;
+    return fetch(url).then(function(r){
+      if(r.ok) return r.json();
+      if(tentativas > 1){
+        return new Promise(function(resolve){ setTimeout(resolve, 900 * (4 - tentativas)); })
+          .then(function(){ return fipeFetch(url, tentativas - 1); });
+      }
+      throw new Error('status ' + r.status);
+    });
+  }
+
   function fipePreencherSelect(select, itens, labelKey, valueKey, placeholder){
     var opts = '<option value="">' + placeholder + '</option>';
     itens.forEach(function(it){
@@ -819,8 +884,7 @@
     els.fipeMarca.innerHTML = '<option value="">Carregando marcas…</option>';
     resetarModeloEAno();
     fipeLimparErro();
-    return fetch(FIPE_BASE + '/marcas/v1/' + tipo)
-      .then(function(r){ if(!r.ok) throw new Error('status ' + r.status); return r.json(); })
+    return fipeFetch(FIPE_BASE + '/marcas/v1/' + tipo)
       .then(function(lista){
         fipeTipoCarregado = tipo;
         fipePreencherSelect(els.fipeMarca, lista, 'nome', 'valor', 'Selecione a marca');
@@ -837,8 +901,7 @@
     fipeLimparErro();
     if(!marcaCodigo) return Promise.resolve();
     els.fipeModelo.innerHTML = '<option value="">Carregando modelos…</option>';
-    return fetch(FIPE_BASE + '/veiculos/v1/' + fipeTipoAtual() + '/' + marcaCodigo)
-      .then(function(r){ if(!r.ok) throw new Error('status ' + r.status); return r.json(); })
+    return fipeFetch(FIPE_BASE + '/veiculos/v1/' + fipeTipoAtual() + '/' + marcaCodigo)
       .then(function(lista){ fipePreencherSelect(els.fipeModelo, lista, 'modelo', 'valor', 'Selecione o modelo'); })
       .catch(function(){
         els.fipeModelo.innerHTML = '<option value="">Não foi possível carregar</option>';
@@ -854,8 +917,7 @@
     fipeLimparErro();
     if(!modeloCodigo) return Promise.resolve();
     els.fipeAno.innerHTML = '<option value="">Carregando anos…</option>';
-    return fetch(FIPE_BASE + '/anos/v1/' + fipeTipoAtual() + '/' + marcaCodigo + '/' + modeloCodigo)
-      .then(function(r){ if(!r.ok) throw new Error('status ' + r.status); return r.json(); })
+    return fipeFetch(FIPE_BASE + '/anos/v1/' + fipeTipoAtual() + '/' + marcaCodigo + '/' + modeloCodigo)
       .then(function(lista){ fipePreencherSelect(els.fipeAno, lista, 'nome', 'valor', 'Selecione o ano'); })
       .catch(function(){
         els.fipeAno.innerHTML = '<option value="">Não foi possível carregar</option>';
@@ -868,8 +930,7 @@
     els.fipeResultado.style.display = 'none';
     fipeLimparErro();
     if(!anoCodigo) return Promise.resolve();
-    return fetch(FIPE_BASE + '/detalhes/v1/' + fipeTipoAtual() + '/' + marcaCodigo + '/' + modeloCodigo + '/' + encodeURIComponent(anoCodigo))
-      .then(function(r){ if(!r.ok) throw new Error('status ' + r.status); return r.json(); })
+    return fipeFetch(FIPE_BASE + '/detalhes/v1/' + fipeTipoAtual() + '/' + marcaCodigo + '/' + modeloCodigo + '/' + encodeURIComponent(anoCodigo))
       .then(function(dados){
         fipeDados = dados;
         els.fipeResultado.textContent = 'Valor de referência FIPE: ' + dados.valor + ' · Código FIPE: ' + dados.codigoFipe;
@@ -1113,15 +1174,21 @@
       need(validCpf(els.seguradoCpf.value), els.seguradoCpf);
       need(validBirthDate(els.seguradoNasc.value), els.seguradoNasc);
       need(els.seguradoEstadoCivil.value, els.seguradoEstadoCivil);
+      needSeg('ocupacao');
       need(validCep(els.cepPernoite.value), els.cepPernoite);
+      need(els.enderecoNumero.value.trim(), els.enderecoNumero);
+      needSeg('estacionamento');
       need(validPhone(els.seguradoTelefone.value), els.seguradoTelefone);
       need(validEmail(els.seguradoEmail.value), els.seguradoEmail);
     }
-    if(n === 3 && !els.condutorIgualSegurado.checked){
-      need(els.condutorNome.value.trim(), els.condutorNome);
-      need(validCpf(els.condutorCpf.value), els.condutorCpf);
-      need(validBirthDate(els.condutorNasc.value), els.condutorNasc);
-      need(els.condutorEstadoCivil.value, els.condutorEstadoCivil);
+    if(n === 3){
+      if(!els.condutorIgualSegurado.checked){
+        need(els.condutorNome.value.trim(), els.condutorNome);
+        need(validCpf(els.condutorCpf.value), els.condutorCpf);
+        need(validBirthDate(els.condutorNasc.value), els.condutorNasc);
+        need(els.condutorEstadoCivil.value, els.condutorEstadoCivil);
+      }
+      needSeg('condutorJovem');
     }
     if(n === 4){
       needSeg('tipoVeiculo');
@@ -1223,7 +1290,11 @@
       ['CPF', textOf(els.seguradoCpf)],
       ['Nascimento', textOf(els.seguradoNasc)],
       ['Estado civil', textOf(els.seguradoEstadoCivil)],
-      ['CEP de pernoite', textOf(els.cepPernoite) + (enderecoPernoite ? ' (' + (enderecoPernoite.bairro ? enderecoPernoite.bairro + ', ' : '') + enderecoPernoite.cidade + ' - ' + enderecoPernoite.uf + ')' : '')],
+      ['Ocupação profissional', seg.ocupacao || '—'],
+      ['CEP de pernoite', textOf(els.cepPernoite) + (enderecoPernoite ? ' (' + (enderecoPernoite.logradouro ? enderecoPernoite.logradouro + ', ' : '') + (enderecoPernoite.bairro ? enderecoPernoite.bairro + ', ' : '') + enderecoPernoite.cidade + ' - ' + enderecoPernoite.uf + ')' : '')],
+      ['Número', textOf(els.enderecoNumero)],
+      ['Complemento', textOf(els.enderecoComplemento)],
+      ['Fica estacionado', seg.estacionamento || '—'],
       ['Telefone', textOf(els.seguradoTelefone)],
       ['E-mail', textOf(els.seguradoEmail)]
     ]]);
@@ -1236,6 +1307,7 @@
         ['Nascimento', textOf(els.condutorNasc)],
         ['Estado civil', textOf(els.condutorEstadoCivil)]
       ];
+    condutorRows.push(['Condutor entre 18 e 25 anos com frequência?', seg.condutorJovem || '—']);
     L.push(['CONDUTOR PRINCIPAL', 3, condutorRows]);
 
     var isMoto = seg.tipoVeiculo === 'Moto';
