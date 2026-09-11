@@ -345,6 +345,15 @@
         <p class="step-desc">Informações do carro ou moto a ser segurado.</p>
 
         <div class="field">
+          <label>Tipo de veículo <span class="req">*</span></label>
+          <div class="seg">
+            <button type="button" class="seg-btn" data-group="tipoVeiculo" data-value="Carro">Carro</button>
+            <button type="button" class="seg-btn" data-group="tipoVeiculo" data-value="Moto">Moto</button>
+          </div>
+          <div class="error-msg">Selecione o tipo de veículo.</div>
+        </div>
+
+        <div class="field">
           <label>Modelo completo <span class="req">*</span></label>
           <input type="text" id="veiculoModelo" placeholder="Ex.: Honda Civic EXL 2.0 CVT">
           <div class="error-msg">Informe o modelo completo.</div>
@@ -361,13 +370,13 @@
             <div class="error-msg">Selecione o ano modelo.</div>
           </div>
         </div>
-        <div class="row2">
+        <div class="row2" id="rowPlacaPortas">
           <div class="field">
             <label>Placa</label>
             <input type="text" id="veiculoPlaca" placeholder="ABC1D23" maxlength="7" style="text-transform:uppercase;">
             <div class="hint">Deixe em branco se ainda não tiver a placa (0km).</div>
           </div>
-          <div class="field">
+          <div class="field" id="portasField">
             <label>Qtd. de portas <span class="req">*</span></label>
             <select id="qtdPortas">
               <option value="">Selecione</option>
@@ -406,7 +415,7 @@
           <div class="error-msg">Selecione uma opção.</div>
         </div>
 
-        <div class="field">
+        <div class="field" id="kitGasField">
           <label>Possui kit-gás instalado? <span class="req">*</span></label>
           <div class="seg">
             <button type="button" class="seg-btn" data-group="kitGas" data-value="Sim">Sim</button>
@@ -436,6 +445,7 @@
           </div>
         </div>
 
+        <div id="blindadoWrap">
         <div class="field">
           <label>Veículo blindado? <span class="req">*</span></label>
           <div class="seg">
@@ -459,6 +469,7 @@
           </div>
           <p class="hint" style="margin:-4px 0 14px;">* Em caso de veículo 0 km, envie a nota fiscal da blindagem junto com este formulário.</p>
         </div>
+        </div>
       </section>
 
       <!-- STEP 5: USO DO VEÍCULO -->
@@ -470,8 +481,8 @@
           <div class="seg" style="flex-wrap:wrap;">
             <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Particular" style="min-width:47%;">Particular</button>
             <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Transporte por aplicativo (App)" style="min-width:47%;">Transporte por app</button>
-            <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Táxi" style="min-width:47%;">Táxi</button>
-            <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Escolar" style="min-width:47%;">Escolar</button>
+            <button type="button" class="seg-btn" id="usoTaxiBtn" data-group="usoVeiculo" data-value="Táxi" style="min-width:47%;">Táxi</button>
+            <button type="button" class="seg-btn" id="usoEscolarBtn" data-group="usoVeiculo" data-value="Escolar" style="min-width:47%;">Escolar</button>
             <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Frete" style="min-width:47%;">Frete</button>
             <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Outros" style="min-width:47%;">Outros</button>
           </div>
@@ -512,7 +523,7 @@
 
         <div class="divider"></div>
 
-        <div class="field">
+        <div class="field" id="vidrosField">
           <label>Substituição de vidros, retrovisores, faróis e lanternas</label>
           <p class="hint" style="margin:-2px 0 10px;">Opcional — só preencha se quiser contratar essa cobertura.</p>
           <div class="seg" style="flex-wrap:wrap;">
@@ -522,7 +533,7 @@
           </div>
         </div>
 
-        <div class="field">
+        <div class="field" id="carroReservaField">
           <label>Carro reserva — deseja incluir? <span class="req">*</span></label>
           <div class="seg">
             <button type="button" class="seg-btn" data-group="carroReserva" data-value="Sim">Sim</button>
@@ -530,7 +541,7 @@
           </div>
           <div class="error-msg">Selecione uma opção.</div>
         </div>
-        <div class="field">
+        <div class="field" id="martelinhoField">
           <label>Martelinho de ouro — deseja incluir? <span class="req">*</span></label>
           <div class="seg">
             <button type="button" class="seg-btn" data-group="martelinho" data-value="Sim">Sim</button>
@@ -667,6 +678,47 @@
     if(group === 'antifurto'){ els.antifurtoBox.hidden = value !== 'Sim'; }
     if(group === 'blindado'){ els.blindadoBox.hidden = value !== 'Sim'; }
     if(group === 'usoVeiculo'){ els.usoOutrosBox.hidden = value !== 'Outros'; }
+    if(group === 'tipoVeiculo'){ syncVeiculoTipo(value); }
+  }
+
+  // Itens que só existem/fazem sentido em carro: portas, kit-gás, blindagem,
+  // vidros (parabrisa/vigia), carro reserva e martelinho de ouro (funilaria
+  // de lataria). Nenhum desses se aplica a moto.
+  var CARRO_ONLY_FIELDS = ['portasField','kitGasField','vidrosField','blindadoWrap','carroReservaField','martelinhoField'];
+  var CARRO_ONLY_SEG_GROUPS = ['kitGas','blindado','coberturaBlindagem','vidros','carroReserva','martelinho'];
+
+  function syncVeiculoTipo(value){
+    var isMoto = value === 'Moto';
+    CARRO_ONLY_FIELDS.forEach(function(id){
+      if(els[id]) els[id].hidden = isMoto;
+    });
+    els.rowPlacaPortas.style.gridTemplateColumns = isMoto ? '1fr' : '';
+    if(isMoto){
+      CARRO_ONLY_FIELDS.forEach(function(id){ if(els[id]) clearFieldError(els[id]); });
+      els.qtdPortas.value = '';
+      els.valorBlindagem.value = '';
+      CARRO_ONLY_SEG_GROUPS.forEach(function(group){
+        seg[group] = undefined;
+        $all('.seg-btn[data-group="'+group+'"]').forEach(function(b){ b.classList.remove('on'); });
+      });
+      els.blindadoBox.hidden = true;
+    }
+    // "Táxi" (carro) vira "Mototáxi" (moto) — categoria de uso diferente.
+    var novoValorTaxi = isMoto ? 'Mototáxi' : 'Táxi';
+    if(els.usoTaxiBtn.dataset.value !== novoValorTaxi){
+      if(seg.usoVeiculo === els.usoTaxiBtn.dataset.value){
+        seg.usoVeiculo = undefined;
+        els.usoTaxiBtn.classList.remove('on');
+      }
+      els.usoTaxiBtn.dataset.value = novoValorTaxi;
+      els.usoTaxiBtn.textContent = novoValorTaxi;
+    }
+    // Transporte escolar exige veículo fechado (CTB) — não se aplica a moto.
+    els.usoEscolarBtn.hidden = isMoto;
+    if(isMoto && seg.usoVeiculo === 'Escolar'){
+      seg.usoVeiculo = undefined;
+      els.usoEscolarBtn.classList.remove('on');
+    }
   }
 
   // condutor = segurado toggle
@@ -741,28 +793,37 @@
       need(els.condutorEstadoCivil.value, els.condutorEstadoCivil);
     }
     if(n === 4){
+      needSeg('tipoVeiculo');
       need(els.veiculoModelo.value.trim(), els.veiculoModelo);
       need(els.anoFab.value, els.anoFab);
       need(els.anoModelo.value, els.anoModelo);
-      need(els.qtdPortas.value, els.qtdPortas);
+      if(seg.tipoVeiculo !== 'Moto'){
+        need(els.qtdPortas.value, els.qtdPortas);
+      }
       needSeg('zeroKm');
       if(seg.zeroKm === 'Sim'){ need(els.dataRetirada.value, els.dataRetirada); }
       needSeg('alienado');
-      needSeg('kitGas');
+      if(seg.tipoVeiculo !== 'Moto'){
+        needSeg('kitGas');
+      }
       needSeg('antifurto');
       if(seg.antifurto === 'Sim'){
         need(els.antifurtoAlarme.checked || els.antifurtoRastreador.checked, els.antifurtoBox.querySelector('.field'));
       }
-      needSeg('blindado');
-      if(seg.blindado === 'Sim'){ needSeg('coberturaBlindagem'); }
+      if(seg.tipoVeiculo !== 'Moto'){
+        needSeg('blindado');
+        if(seg.blindado === 'Sim'){ needSeg('coberturaBlindagem'); }
+      }
     }
     if(n === 5){
       needSeg('usoVeiculo');
       if(seg.usoVeiculo === 'Outros'){ need(els.usoOutrosTexto.value.trim(), els.usoOutrosTexto); }
     }
     if(n === 6){
-      needSeg('carroReserva');
-      needSeg('martelinho');
+      if(seg.tipoVeiculo !== 'Moto'){
+        needSeg('carroReserva');
+        needSeg('martelinho');
+      }
       needSeg('isencao1');
     }
     return ok;
@@ -828,17 +889,19 @@
       ];
     L.push(['CONDUTOR PRINCIPAL', 3, condutorRows]);
 
+    var isMoto = seg.tipoVeiculo === 'Moto';
     var veicRows = [
+      ['Tipo de veículo', seg.tipoVeiculo || '—'],
       ['Modelo', textOf(els.veiculoModelo)],
       ['Ano fab. / modelo', textOf(els.anoFab) + ' / ' + textOf(els.anoModelo)],
-      ['Placa', textOf(els.veiculoPlaca)],
-      ['Qtd. de portas', textOf(els.qtdPortas)],
-      ['Chassi', textOf(els.veiculoChassi)],
-      ['0 km', seg.zeroKm || '—']
+      ['Placa', textOf(els.veiculoPlaca)]
     ];
+    if(!isMoto) veicRows.push(['Qtd. de portas', textOf(els.qtdPortas)]);
+    veicRows.push(['Chassi', textOf(els.veiculoChassi)]);
+    veicRows.push(['0 km', seg.zeroKm || '—']);
     if(seg.zeroKm === 'Sim') veicRows.push(['Data prevista de retirada', textOf(els.dataRetirada)]);
     veicRows.push(['Alienado (financiado)', seg.alienado || '—']);
-    veicRows.push(['Kit-gás', seg.kitGas || '—']);
+    if(!isMoto) veicRows.push(['Kit-gás', seg.kitGas || '—']);
     veicRows.push(['Antifurto', seg.antifurto || '—']);
     if(seg.antifurto === 'Sim'){
       var tipos = [];
@@ -846,10 +909,12 @@
       if(els.antifurtoRastreador.checked) tipos.push('Rastreador de fábrica');
       veicRows.push(['Tipo de antifurto', tipos.join(', ') || '—']);
     }
-    veicRows.push(['Blindado', seg.blindado || '—']);
-    if(seg.blindado === 'Sim'){
-      veicRows.push(['Cobertura p/ blindagem', seg.coberturaBlindagem || '—']);
-      veicRows.push(['Valor da blindagem', textOf(els.valorBlindagem)]);
+    if(!isMoto){
+      veicRows.push(['Blindado', seg.blindado || '—']);
+      if(seg.blindado === 'Sim'){
+        veicRows.push(['Cobertura p/ blindagem', seg.coberturaBlindagem || '—']);
+        veicRows.push(['Valor da blindagem', textOf(els.valorBlindagem)]);
+      }
     }
     L.push(['DADOS DO VEÍCULO', 4, veicRows]);
 
@@ -861,9 +926,11 @@
     covRows.push(['Danos corporais a terceiros', textOf(els.rcfDanosCorporais)]);
     covRows.push(['Acidentes pessoais a passageiros', textOf(els.app)]);
     covRows.push(['Danos morais', textOf(els.danosMorais)]);
-    covRows.push(['Substituição de vidros', seg.vidros || 'Não informado']);
-    covRows.push(['Carro reserva', seg.carroReserva || '—']);
-    covRows.push(['Martelinho de ouro', seg.martelinho || '—']);
+    if(!isMoto){
+      covRows.push(['Substituição de vidros', seg.vidros || 'Não informado']);
+      covRows.push(['Carro reserva', seg.carroReserva || '—']);
+      covRows.push(['Martelinho de ouro', seg.martelinho || '—']);
+    }
     covRows.push(['Isenção de 1ª parcela', seg.isencao1 || '—']);
     L.push(['COBERTURAS', 6, covRows]);
 
