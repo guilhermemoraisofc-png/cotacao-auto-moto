@@ -116,6 +116,21 @@
   .seg-btn.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);}
   .seg-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
+  .switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .switch-row label{margin-bottom:0;flex:1;}
+  .toggle-switch{
+    position:relative;flex:none;width:46px;height:26px;border-radius:99px;padding:0;
+    border:1.5px solid var(--border);background:var(--surface-2);
+    cursor:pointer;font-family:inherit;transition:background .15s ease,border-color .15s ease;
+  }
+  .toggle-switch .thumb{
+    position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(20,22,40,.25);transition:transform .15s ease;
+  }
+  .toggle-switch.on{background:var(--accent);border-color:var(--accent);}
+  .toggle-switch.on .thumb{transform:translateX(20px);}
+  .toggle-switch:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
   .check-row{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;background:var(--surface);}
   .check-row input{margin-top:2px;width:16px;height:16px;accent-color:var(--accent);flex:none;}
   .check-row .ct b{display:block;font-size:13.5px;font-weight:600;}
@@ -464,13 +479,9 @@
 
         <div class="divider"></div>
 
-        <div class="field">
-          <label id="segLbl3">O veículo é 0 km? <span class="req">*</span></label>
-          <div class="seg" role="radiogroup" aria-labelledby="segLbl3">
-            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="zeroKm" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="zeroKm" data-value="Não">Não</button>
-          </div>
-          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
+        <div class="field switch-row">
+          <label id="segLbl3">Veículo 0 km?</label>
+          <button type="button" class="toggle-switch" role="switch" aria-checked="false" aria-labelledby="segLbl3" data-group="zeroKm" data-on="Sim" data-off="Não"><span class="thumb"></span></button>
         </div>
         <div class="field" id="dataRetiradaBox" hidden>
           <label for="dataRetirada">Data prevista de retirada <span class="req">*</span></label>
@@ -487,22 +498,14 @@
           <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
 
-        <div class="field" id="kitGasField">
-          <label id="segLbl5">Possui kit-gás instalado? <span class="req">*</span></label>
-          <div class="seg" role="radiogroup" aria-labelledby="segLbl5">
-            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="kitGas" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="kitGas" data-value="Não">Não</button>
-          </div>
-          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
+        <div class="field switch-row" id="kitGasField">
+          <label id="segLbl5">Possui kit-gás instalado?</label>
+          <button type="button" class="toggle-switch" role="switch" aria-checked="false" aria-labelledby="segLbl5" data-group="kitGas" data-on="Sim" data-off="Não"><span class="thumb"></span></button>
         </div>
 
-        <div class="field">
-          <label id="segLbl6">Possui dispositivo antifurto? <span class="req">*</span></label>
-          <div class="seg" role="radiogroup" aria-labelledby="segLbl6">
-            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="antifurto" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="antifurto" data-value="Não">Não</button>
-          </div>
-          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
+        <div class="field switch-row">
+          <label id="segLbl6">Possui dispositivo antifurto?</label>
+          <button type="button" class="toggle-switch" role="switch" aria-checked="false" aria-labelledby="segLbl6" data-group="antifurto" data-on="Sim" data-off="Não"><span class="thumb"></span></button>
         </div>
         <div class="subbox" id="antifurtoBox" hidden>
           <div class="field" style="margin-bottom:6px;">
@@ -518,13 +521,9 @@
         </div>
 
         <div id="blindadoWrap">
-        <div class="field">
-          <label id="segLbl7">Veículo blindado? <span class="req">*</span></label>
-          <div class="seg" role="radiogroup" aria-labelledby="segLbl7">
-            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="blindado" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="blindado" data-value="Não">Não</button>
-          </div>
-          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
+        <div class="field switch-row">
+          <label id="segLbl7">Veículo blindado?</label>
+          <button type="button" class="toggle-switch" role="switch" aria-checked="false" aria-labelledby="segLbl7" data-group="blindado" data-on="Sim" data-off="Não"><span class="thumb"></span></button>
         </div>
         <div class="subbox" id="blindadoBox" hidden>
           <div class="field">
@@ -1009,6 +1008,8 @@
   }
   function clearSegGroup(group){
     $all('.seg-btn[data-group="'+group+'"]').forEach(function(b){ setSegBtnOn(b, false); });
+    var sw = $('.toggle-switch[data-group="'+group+'"]');
+    if(sw) setSwitchOn(sw, false);
   }
   $all('.seg-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -1021,6 +1022,47 @@
       autosave();
     });
   });
+
+  // ---------- interruptores (toggle switch) ----------
+  // Usado nas perguntas Sim/Não que funcionam como "liga/desliga" de um item
+  // (0 km, kit-gás, antifurto, blindado): em vez de dois botões lado a lado,
+  // é um único controle que já começa desligado ("Não") e a pessoa só ativa
+  // se aquilo se aplicar ao veículo dela — menos cliques, mesma informação.
+  function setSwitchOn(sw, on){
+    sw.classList.toggle('on', !!on);
+    sw.setAttribute('aria-checked', on ? 'true' : 'false');
+  }
+  $all('.toggle-switch').forEach(function(sw){
+    sw.addEventListener('click', function(){
+      var group = sw.dataset.group;
+      var onValue = sw.dataset.on || 'Sim';
+      var offValue = sw.dataset.off || 'Não';
+      var novo = (seg[group] === onValue) ? offValue : onValue;
+      seg[group] = novo;
+      setSwitchOn(sw, novo === onValue);
+      onSegChange(group, novo);
+      autosave();
+    });
+  });
+
+  // Define o valor de um grupo (seg-btn OU toggle-switch) programaticamente —
+  // usado tanto pros padrões iniciais quanto pra restauração do autosave, sem
+  // precisar duplicar a lógica de "qual tipo de controle é esse grupo".
+  function setGroupValue(group, value){
+    var sw = $('.toggle-switch[data-group="' + group + '"]');
+    if(sw){
+      seg[group] = value;
+      setSwitchOn(sw, value === (sw.dataset.on || 'Sim'));
+      return true;
+    }
+    var btns = $all('.seg-btn[data-group="' + group + '"]');
+    if(!btns.length) return false;
+    var alvo = btns.filter(function(b){ return b.dataset.value === value; })[0];
+    if(!alvo) return false;
+    seg[group] = value;
+    btns.forEach(function(b){ setSegBtnOn(b, b === alvo); });
+    return true;
+  }
 
   // Devolve a Promise da recarga da FIPE quando o grupo é 'tipoVeiculo' (usado
   // pela restauração do autosave pra saber quando pode escolher marca/modelo/
@@ -1066,11 +1108,37 @@
   }
   updateCoverageLabels();
 
+  // Perguntas que funcionam como "liga/desliga" — cobertura/serviço opcional
+  // ("quer contratar X?", "deseja incluir X?") e características do veículo
+  // que a maioria não tem (0 km, kit-gás, antifurto, blindado) — já nascem
+  // marcadas/desligadas em "Não": a pessoa só ativa quando aquilo se aplica,
+  // em vez de ser obrigada a responder Sim/Não pra cada uma. Isso é diferente
+  // das perguntas sobre HISTÓRICO/situação legal (sinistro nos últimos 12
+  // meses, financiado, condutor jovem) — essas continuam sem valor padrão,
+  // porque ali o "Não" precisa ser uma resposta real da pessoa, não um chute
+  // nosso (têm peso jurídico/de risco maior que "tem kit-gás ou não").
+  var TOGGLE_PADRAO_NAO = {
+    covDM: 'Não', covDC: 'Não', covAPP: 'Não', covDMor: 'Não',
+    vidros: 'Não incluir esta cobertura',
+    coberturaBlindagem: 'Não', carroReserva: 'Não', martelinho: 'Não', isencao1: 'Não',
+    zeroKm: 'Não', kitGas: 'Não', antifurto: 'Não', blindado: 'Não'
+  };
+  function aplicarTogglesPadrao(grupos){
+    (grupos || Object.keys(TOGGLE_PADRAO_NAO)).forEach(function(group){
+      var value = TOGGLE_PADRAO_NAO[group];
+      if(value) setGroupValue(group, value);
+    });
+  }
+  // A restauração do autosave (mais abaixo) roda depois e sobrescreve esse
+  // padrão se a pessoa já tinha escolhido outra coisa antes de sair da página.
+  aplicarTogglesPadrao();
+
   // Itens que só existem/fazem sentido em carro: portas, kit-gás, blindagem,
   // vidros (parabrisa/vigia), carro reserva e martelinho de ouro (funilaria
   // de lataria). Nenhum desses se aplica a moto.
   var CARRO_ONLY_FIELDS = ['portasField','kitGasField','vidrosField','blindadoWrap','carroReservaField','martelinhoField'];
   var CARRO_ONLY_SEG_GROUPS = ['kitGas','blindado','coberturaBlindagem','vidros','carroReserva','martelinho'];
+  var CARRO_ONLY_TOGGLE_GROUPS = ['kitGas','blindado','vidros','coberturaBlindagem','carroReserva','martelinho'];
 
   function syncVeiculoTipo(value){
     var isMoto = value === 'Moto';
@@ -1093,6 +1161,11 @@
         clearSegGroup(group);
       });
       els.blindadoBox.hidden = true;
+    } else {
+      // Voltando pra Carro (ou selecionando pela 1ª vez): reaplica o padrão
+      // "Não" nos toggles opcionais que só existem em carro, já que trocar
+      // pra Moto zera essas respostas.
+      aplicarTogglesPadrao(CARRO_ONLY_TOGGLE_GROUPS);
     }
     // "Táxi" (carro) vira "Mototáxi" (moto) — categoria de uso diferente.
     var novoValorTaxi = isMoto ? 'Mototáxi' : 'Táxi';
@@ -1514,11 +1587,7 @@
     function aplicar(group){
       var value = savedSeg[group];
       if(value === undefined || value === null) return;
-      var btns = $all('.seg-btn[data-group="' + group + '"]');
-      var alvo = btns.filter(function(b){ return b.dataset.value === value; })[0];
-      if(!alvo) return;
-      seg[group] = value;
-      btns.forEach(function(b){ setSegBtnOn(b, b === alvo); });
+      if(!setGroupValue(group, value)) return;
       var resultado = onSegChange(group, value);
       if(group === 'tipoVeiculo') tipoVeiculoPromise = resultado;
     }
