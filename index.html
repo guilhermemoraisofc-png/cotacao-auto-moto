@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Formulário Cotação Auto/Moto</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/imask/7.6.1/imask.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -89,6 +90,8 @@
   }
   input:focus,select:focus,textarea:focus{border-color:var(--accent);}
   input.invalid,select.invalid{border-color:var(--danger);}
+  select:disabled{opacity:.6;cursor:not-allowed;}
+  .link-btn{background:none;border:none;padding:0;margin:0;color:var(--accent);font-weight:600;text-decoration:underline;cursor:pointer;font-family:inherit;font-size:12.5px;}
   select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%235a5e6b' stroke-width='1.6' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
 
   .error-msg{display:none;color:var(--danger);font-size:12px;margin-top:5px;font-weight:600;}
@@ -197,22 +200,22 @@
         <p class="step-desc">É a sua primeira apólice conosco ou uma renovação de um seguro já existente?</p>
 
         <div class="field">
-          <div class="seg" id="tipoSeguroSeg">
-            <button type="button" class="seg-btn" data-group="tipoSeguro" data-value="Seguro Novo">Seguro Novo</button>
-            <button type="button" class="seg-btn" data-group="tipoSeguro" data-value="Renovação">Renovação</button>
+          <div class="seg" id="tipoSeguroSeg" role="radiogroup" aria-label="Tipo de seguro">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="tipoSeguro" data-value="Seguro Novo">Seguro Novo</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="tipoSeguro" data-value="Renovação">Renovação</button>
           </div>
-          <div class="error-msg">Selecione uma opção para continuar.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção para continuar.</div>
         </div>
 
         <div class="subbox" id="renovacaoBox" hidden>
           <div class="field">
-            <label>Seguradora atual <span class="req">*</span></label>
+            <label for="seguradoraAtual">Seguradora atual <span class="req">*</span></label>
             <input type="text" id="seguradoraAtual" placeholder="Ex.: Porto Seguro, Azul, HDI...">
-            <div class="error-msg">Informe a seguradora atual.</div>
+            <div class="error-msg" aria-live="polite">Informe a seguradora atual.</div>
           </div>
           <div class="row2">
             <div class="field">
-              <label>Classe de bônus atual <span class="req">*</span></label>
+              <label for="classeBonus">Classe de bônus atual <span class="req">*</span></label>
               <select id="classeBonus">
                 <option value="">Selecione</option>
                 <option>Classe 0 (sem bônus)</option>
@@ -221,21 +224,21 @@
                 <option>Classe 7</option><option>Classe 8</option><option>Classe 9</option>
                 <option>Não sei informar</option>
               </select>
-              <div class="error-msg">Selecione a classe de bônus.</div>
+              <div class="error-msg" aria-live="polite">Selecione a classe de bônus.</div>
             </div>
             <div class="field">
-              <label>Final da vigência atual <span class="req">*</span></label>
+              <label for="finalVigencia">Final da vigência atual <span class="req">*</span></label>
               <input type="date" id="finalVigencia">
-              <div class="error-msg">Informe a data final da vigência.</div>
+              <div class="error-msg" aria-live="polite">Informe a data final da vigência.</div>
             </div>
           </div>
           <div class="field">
-            <label>Teve algum sinistro nos últimos 12 meses? <span class="req">*</span></label>
-            <div class="seg">
-              <button type="button" class="seg-btn" data-group="sinistro12m" data-value="Sim">Sim</button>
-              <button type="button" class="seg-btn" data-group="sinistro12m" data-value="Não">Não</button>
+            <label id="segLbl1">Teve algum sinistro nos últimos 12 meses? <span class="req">*</span></label>
+            <div class="seg" role="radiogroup" aria-labelledby="segLbl1">
+              <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="sinistro12m" data-value="Sim">Sim</button>
+              <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="sinistro12m" data-value="Não">Não</button>
             </div>
-            <div class="error-msg">Selecione uma opção.</div>
+            <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
           </div>
         </div>
       </section>
@@ -246,48 +249,49 @@
         <p class="step-desc">A pessoa titular da apólice — em quem nome o seguro será feito.</p>
 
         <div class="field">
-          <label>Nome completo <span class="req">*</span></label>
+          <label for="seguradoNome">Nome completo <span class="req">*</span></label>
           <input type="text" id="seguradoNome" autocomplete="name">
-          <div class="error-msg">Informe o nome completo.</div>
+          <div class="error-msg" aria-live="polite">Informe o nome completo.</div>
         </div>
         <div class="row2">
           <div class="field">
-            <label>CPF <span class="req">*</span></label>
+            <label for="seguradoCpf">CPF <span class="req">*</span></label>
             <input type="text" id="seguradoCpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14">
-            <div class="error-msg">CPF inválido — confira os números digitados.</div>
+            <div class="error-msg" aria-live="polite">CPF inválido — confira os números digitados.</div>
           </div>
           <div class="field">
-            <label>Data de nascimento <span class="req">*</span></label>
+            <label for="seguradoNasc">Data de nascimento <span class="req">*</span></label>
             <input type="date" id="seguradoNasc">
-            <div class="error-msg">Data de nascimento inválida — confira o dia, mês e ano.</div>
+            <div class="error-msg" aria-live="polite">Data de nascimento inválida — confira o dia, mês e ano.</div>
           </div>
         </div>
         <div class="field">
-          <label>Estado civil <span class="req">*</span></label>
+          <label for="seguradoEstadoCivil">Estado civil <span class="req">*</span></label>
           <select id="seguradoEstadoCivil">
             <option value="">Selecione</option>
             <option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option>
             <option>Viúvo(a)</option><option>União estável</option>
           </select>
-          <div class="error-msg">Selecione o estado civil.</div>
+          <div class="error-msg" aria-live="polite">Selecione o estado civil.</div>
         </div>
         <div class="row2">
           <div class="field">
-            <label>CEP de pernoite do veículo <span class="req">*</span></label>
+            <label for="cepPernoite">CEP de pernoite do veículo <span class="req">*</span></label>
             <input type="text" id="cepPernoite" inputmode="numeric" placeholder="00000-000" maxlength="9">
             <div class="hint">Onde o carro fica estacionado à noite.</div>
-            <div class="error-msg">CEP inválido — use 8 dígitos.</div>
+            <p class="hint" id="cepResultado" style="display:none;font-weight:600;color:var(--text);"></p>
+            <div class="error-msg" aria-live="polite">CEP inválido — use 8 dígitos.</div>
           </div>
           <div class="field">
-            <label>Telefone de contato <span class="req">*</span></label>
+            <label for="seguradoTelefone">Telefone de contato <span class="req">*</span></label>
             <input type="tel" id="seguradoTelefone" inputmode="numeric" placeholder="(11) 90000-0000" maxlength="15">
-            <div class="error-msg">Informe um telefone válido.</div>
+            <div class="error-msg" aria-live="polite">Informe um telefone válido.</div>
           </div>
         </div>
         <div class="field">
-          <label>E-mail de contato <span class="req">*</span></label>
+          <label for="seguradoEmail">E-mail de contato <span class="req">*</span></label>
           <input type="email" id="seguradoEmail" autocomplete="email" placeholder="seuemail@exemplo.com">
-          <div class="error-msg">Informe um e-mail válido.</div>
+          <div class="error-msg" aria-live="polite">Informe um e-mail válido.</div>
         </div>
       </section>
 
@@ -303,30 +307,30 @@
 
         <div id="condutorFields">
           <div class="field">
-            <label>Nome completo <span class="req">*</span></label>
+            <label for="condutorNome">Nome completo <span class="req">*</span></label>
             <input type="text" id="condutorNome">
-            <div class="error-msg">Informe o nome completo.</div>
+            <div class="error-msg" aria-live="polite">Informe o nome completo.</div>
           </div>
           <div class="row2">
             <div class="field">
-              <label>CPF <span class="req">*</span></label>
+              <label for="condutorCpf">CPF <span class="req">*</span></label>
               <input type="text" id="condutorCpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14">
-              <div class="error-msg">CPF inválido — confira os números digitados.</div>
+              <div class="error-msg" aria-live="polite">CPF inválido — confira os números digitados.</div>
             </div>
             <div class="field">
-              <label>Data de nascimento <span class="req">*</span></label>
+              <label for="condutorNasc">Data de nascimento <span class="req">*</span></label>
               <input type="date" id="condutorNasc">
-              <div class="error-msg">Data de nascimento inválida — confira o dia, mês e ano.</div>
+              <div class="error-msg" aria-live="polite">Data de nascimento inválida — confira o dia, mês e ano.</div>
             </div>
           </div>
           <div class="field">
-            <label>Estado civil <span class="req">*</span></label>
+            <label for="condutorEstadoCivil">Estado civil <span class="req">*</span></label>
             <select id="condutorEstadoCivil">
               <option value="">Selecione</option>
               <option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option>
               <option>Viúvo(a)</option><option>União estável</option>
             </select>
-            <div class="error-msg">Selecione o estado civil.</div>
+            <div class="error-msg" aria-live="polite">Selecione o estado civil.</div>
           </div>
         </div>
       </section>
@@ -337,92 +341,121 @@
         <p class="step-desc">Informações do carro ou moto a ser segurado.</p>
 
         <div class="field">
-          <label>Tipo de veículo <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="tipoVeiculo" data-value="Carro">Carro</button>
-            <button type="button" class="seg-btn" data-group="tipoVeiculo" data-value="Moto">Moto</button>
+          <label id="segLbl2">Tipo de veículo <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl2">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="tipoVeiculo" data-value="Carro">Carro</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="tipoVeiculo" data-value="Moto">Moto</button>
           </div>
-          <div class="error-msg">Selecione o tipo de veículo.</div>
+          <div class="error-msg" aria-live="polite">Selecione o tipo de veículo.</div>
         </div>
 
-        <div class="field">
-          <label>Modelo completo <span class="req">*</span></label>
-          <input type="text" id="veiculoModelo" placeholder="Ex.: Honda Civic EXL 2.0 CVT">
-          <div class="error-msg">Informe o modelo completo.</div>
+        <div class="field" id="fipeMarcaField">
+          <label for="fipeMarca">Marca <span class="req">*</span></label>
+          <select id="fipeMarca" disabled><option value="">Escolha carro ou moto acima primeiro</option></select>
+          <div class="error-msg" aria-live="polite">Selecione a marca.</div>
         </div>
         <div class="row2">
-          <div class="field">
-            <label>Ano de fabricação <span class="req">*</span></label>
-            <select id="anoFab"></select>
-            <div class="error-msg">Selecione o ano de fabricação.</div>
+          <div class="field" id="fipeModeloField">
+            <label for="fipeModelo">Modelo <span class="req">*</span></label>
+            <select id="fipeModelo" disabled><option value="">Selecione a marca primeiro</option></select>
+            <div class="error-msg" aria-live="polite">Selecione o modelo.</div>
           </div>
-          <div class="field">
-            <label>Ano modelo <span class="req">*</span></label>
-            <select id="anoModelo"></select>
-            <div class="error-msg">Selecione o ano modelo.</div>
+          <div class="field" id="fipeAnoField">
+            <label for="fipeAno">Ano <span class="req">*</span></label>
+            <select id="fipeAno" disabled><option value="">Selecione o modelo primeiro</option></select>
+            <div class="error-msg" aria-live="polite">Selecione o ano.</div>
           </div>
         </div>
+        <p class="hint" id="fipeResultado" style="display:none;font-weight:600;color:var(--text);"></p>
+        <p class="hint" id="fipeErro" style="display:none;color:var(--danger);"></p>
+        <p class="hint" id="fipeManualToggleWrap" style="margin-top:2px;">
+          <button type="button" id="toggleModeloManual" class="link-btn">Não encontrei meu veículo — quero digitar manualmente</button>
+        </p>
+
+        <div id="modeloManualWrap" hidden>
+          <div class="field">
+            <label for="veiculoModelo">Modelo completo <span class="req">*</span></label>
+            <input type="text" id="veiculoModelo" placeholder="Ex.: Honda Civic EXL 2.0 CVT">
+            <div class="error-msg" aria-live="polite">Informe o modelo completo.</div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="anoFab">Ano de fabricação <span class="req">*</span></label>
+              <select id="anoFab"></select>
+              <div class="error-msg" aria-live="polite">Selecione o ano de fabricação.</div>
+            </div>
+            <div class="field">
+              <label for="anoModelo">Ano modelo <span class="req">*</span></label>
+              <select id="anoModelo"></select>
+              <div class="error-msg" aria-live="polite">Selecione o ano modelo.</div>
+            </div>
+          </div>
+          <p class="hint" style="margin-top:-6px;">
+            <button type="button" id="toggleModeloFipe" class="link-btn">Voltar a buscar pela tabela FIPE</button>
+          </p>
+        </div>
+
         <div class="row2" id="rowPlacaPortas">
           <div class="field">
-            <label>Placa</label>
+            <label for="veiculoPlaca">Placa</label>
             <input type="text" id="veiculoPlaca" placeholder="ABC1D23" maxlength="7" style="text-transform:uppercase;">
             <div class="hint">Deixe em branco se ainda não tiver a placa (0km).</div>
           </div>
           <div class="field" id="portasField">
-            <label>Qtd. de portas <span class="req">*</span></label>
+            <label for="qtdPortas">Qtd. de portas <span class="req">*</span></label>
             <select id="qtdPortas">
               <option value="">Selecione</option>
               <option>2 portas</option><option>4 portas</option>
             </select>
-            <div class="error-msg">Selecione a quantidade de portas.</div>
+            <div class="error-msg" aria-live="polite">Selecione a quantidade de portas.</div>
           </div>
         </div>
         <div class="field">
-          <label>Chassi</label>
+          <label for="veiculoChassi">Chassi</label>
           <input type="text" id="veiculoChassi" placeholder="Opcional">
         </div>
 
         <div class="divider"></div>
 
         <div class="field">
-          <label>O veículo é 0 km? <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="zeroKm" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="zeroKm" data-value="Não">Não</button>
+          <label id="segLbl3">O veículo é 0 km? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl3">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="zeroKm" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="zeroKm" data-value="Não">Não</button>
           </div>
-          <div class="error-msg">Selecione uma opção.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
         <div class="field" id="dataRetiradaBox" hidden>
-          <label>Data prevista de retirada <span class="req">*</span></label>
+          <label for="dataRetirada">Data prevista de retirada <span class="req">*</span></label>
           <input type="date" id="dataRetirada">
-          <div class="error-msg">Informe a data prevista de retirada.</div>
+          <div class="error-msg" aria-live="polite">Informe a data prevista de retirada.</div>
         </div>
 
         <div class="field">
-          <label>O veículo é alienado (financiado)? <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="alienado" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="alienado" data-value="Não">Não</button>
+          <label id="segLbl4">O veículo é alienado (financiado)? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl4">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="alienado" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="alienado" data-value="Não">Não</button>
           </div>
-          <div class="error-msg">Selecione uma opção.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
 
         <div class="field" id="kitGasField">
-          <label>Possui kit-gás instalado? <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="kitGas" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="kitGas" data-value="Não">Não</button>
+          <label id="segLbl5">Possui kit-gás instalado? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl5">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="kitGas" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="kitGas" data-value="Não">Não</button>
           </div>
-          <div class="error-msg">Selecione uma opção.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
 
         <div class="field">
-          <label>Possui dispositivo antifurto? <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="antifurto" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="antifurto" data-value="Não">Não</button>
+          <label id="segLbl6">Possui dispositivo antifurto? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl6">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="antifurto" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="antifurto" data-value="Não">Não</button>
           </div>
-          <div class="error-msg">Selecione uma opção.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
         <div class="subbox" id="antifurtoBox" hidden>
           <div class="field" style="margin-bottom:6px;">
@@ -433,30 +466,30 @@
             <label class="check-row">
               <input type="checkbox" id="antifurtoRastreador"><span class="ct"><b>Rastreador original de fábrica</b></span>
             </label>
-            <div class="error-msg">Selecione ao menos um tipo.</div>
+            <div class="error-msg" aria-live="polite">Selecione ao menos um tipo.</div>
           </div>
         </div>
 
         <div id="blindadoWrap">
         <div class="field">
-          <label>Veículo blindado? <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="blindado" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="blindado" data-value="Não">Não</button>
+          <label id="segLbl7">Veículo blindado? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl7">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="blindado" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="blindado" data-value="Não">Não</button>
           </div>
-          <div class="error-msg">Selecione uma opção.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
         <div class="subbox" id="blindadoBox" hidden>
           <div class="field">
-            <label>Deseja cobertura para a blindagem? <span class="req">*</span></label>
-            <div class="seg">
-              <button type="button" class="seg-btn" data-group="coberturaBlindagem" data-value="Sim">Sim</button>
-              <button type="button" class="seg-btn" data-group="coberturaBlindagem" data-value="Não">Não</button>
+            <label id="segLbl8">Deseja cobertura para a blindagem? <span class="req">*</span></label>
+            <div class="seg" role="radiogroup" aria-labelledby="segLbl8">
+              <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="coberturaBlindagem" data-value="Sim">Sim</button>
+              <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="coberturaBlindagem" data-value="Não">Não</button>
             </div>
-            <div class="error-msg">Selecione uma opção.</div>
+            <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
           </div>
           <div class="field">
-            <label>Valor da blindagem (R$)</label>
+            <label for="valorBlindagem">Valor da blindagem (R$)</label>
             <input type="text" id="valorBlindagem" inputmode="numeric" placeholder="R$ 0,00">
           </div>
           <p class="hint" style="margin:-4px 0 14px;">* Em caso de veículo 0 km, envie a nota fiscal da blindagem junto com este formulário.</p>
@@ -470,20 +503,20 @@
         <p class="step-desc">Qual é a finalidade principal de uso do veículo?</p>
 
         <div class="field">
-          <div class="seg" style="flex-wrap:wrap;">
-            <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Particular" style="min-width:47%;">Particular</button>
-            <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Transporte por aplicativo (App)" style="min-width:47%;">Transporte por app</button>
-            <button type="button" class="seg-btn" id="usoTaxiBtn" data-group="usoVeiculo" data-value="Táxi" style="min-width:47%;">Táxi</button>
-            <button type="button" class="seg-btn" id="usoEscolarBtn" data-group="usoVeiculo" data-value="Escolar" style="min-width:47%;">Escolar</button>
-            <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Frete" style="min-width:47%;">Frete</button>
-            <button type="button" class="seg-btn" data-group="usoVeiculo" data-value="Outros" style="min-width:47%;">Outros</button>
+          <div class="seg" style="flex-wrap:wrap;" role="radiogroup" aria-label="Uso do veículo">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="usoVeiculo" data-value="Particular" style="min-width:47%;">Particular</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="usoVeiculo" data-value="Transporte por aplicativo (App)" style="min-width:47%;">Transporte por app</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" id="usoTaxiBtn" data-group="usoVeiculo" data-value="Táxi" style="min-width:47%;">Táxi</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" id="usoEscolarBtn" data-group="usoVeiculo" data-value="Escolar" style="min-width:47%;">Escolar</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="usoVeiculo" data-value="Frete" style="min-width:47%;">Frete</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="usoVeiculo" data-value="Outros" style="min-width:47%;">Outros</button>
           </div>
-          <div class="error-msg">Selecione o uso do veículo.</div>
+          <div class="error-msg" aria-live="polite">Selecione o uso do veículo.</div>
         </div>
         <div class="field" id="usoOutrosBox" hidden>
-          <label>Qual outro uso? <span class="req">*</span></label>
+          <label for="usoOutrosTexto">Qual outro uso? <span class="req">*</span></label>
           <input type="text" id="usoOutrosTexto" placeholder="Descreva o uso">
-          <div class="error-msg">Descreva o uso do veículo.</div>
+          <div class="error-msg" aria-live="polite">Descreva o uso do veículo.</div>
         </div>
       </section>
 
@@ -494,12 +527,12 @@
 
         <div class="field" id="covWrapDM">
           <label id="covQDM">Quer contratar cobertura de danos materiais a terceiros?</label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="covDM" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="covDM" data-value="Não">Não</button>
+          <div class="seg" role="radiogroup" aria-labelledby="covQDM">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="covDM" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="covDM" data-value="Não">Não</button>
           </div>
           <div class="field" id="covValDM" hidden style="margin:10px 0 0;">
-            <label id="covValLabelDM">Valor desejado, se já souber (R$)</label>
+            <label for="rcfDanosMateriais" id="covValLabelDM">Valor desejado, se já souber (R$)</label>
             <input type="text" id="rcfDanosMateriais" inputmode="numeric" placeholder="R$ 0,00">
             <p class="hint" id="covValHintDM" style="margin-top:5px;">Se não souber, deixe em branco — a gente define isso na conversa.</p>
           </div>
@@ -507,12 +540,12 @@
 
         <div class="field" id="covWrapDC">
           <label id="covQDC">Quer contratar cobertura de danos corporais a terceiros?</label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="covDC" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="covDC" data-value="Não">Não</button>
+          <div class="seg" role="radiogroup" aria-labelledby="covQDC">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="covDC" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="covDC" data-value="Não">Não</button>
           </div>
           <div class="field" id="covValDC" hidden style="margin:10px 0 0;">
-            <label id="covValLabelDC">Valor desejado, se já souber (R$)</label>
+            <label for="rcfDanosCorporais" id="covValLabelDC">Valor desejado, se já souber (R$)</label>
             <input type="text" id="rcfDanosCorporais" inputmode="numeric" placeholder="R$ 0,00">
             <p class="hint" id="covValHintDC" style="margin-top:5px;">Se não souber, deixe em branco — a gente define isso na conversa.</p>
           </div>
@@ -520,12 +553,12 @@
 
         <div class="field" id="covWrapAPP">
           <label id="covQAPP">Quer contratar cobertura de acidentes pessoais a passageiros (APP)?</label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="covAPP" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="covAPP" data-value="Não">Não</button>
+          <div class="seg" role="radiogroup" aria-labelledby="covQAPP">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="covAPP" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="covAPP" data-value="Não">Não</button>
           </div>
           <div class="field" id="covValAPP" hidden style="margin:10px 0 0;">
-            <label id="covValLabelAPP">Valor desejado, se já souber (R$)</label>
+            <label for="app" id="covValLabelAPP">Valor desejado, se já souber (R$)</label>
             <input type="text" id="app" inputmode="numeric" placeholder="R$ 0,00">
             <p class="hint" id="covValHintAPP" style="margin-top:5px;">Se não souber, deixe em branco — a gente define isso na conversa.</p>
           </div>
@@ -533,12 +566,12 @@
 
         <div class="field" id="covWrapDMor">
           <label id="covQDMor">Quer contratar cobertura de danos morais?</label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="covDMor" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="covDMor" data-value="Não">Não</button>
+          <div class="seg" role="radiogroup" aria-labelledby="covQDMor">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="covDMor" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="covDMor" data-value="Não">Não</button>
           </div>
           <div class="field" id="covValDMor" hidden style="margin:10px 0 0;">
-            <label id="covValLabelDMor">Valor desejado, se já souber (R$)</label>
+            <label for="danosMorais" id="covValLabelDMor">Valor desejado, se já souber (R$)</label>
             <input type="text" id="danosMorais" inputmode="numeric" placeholder="R$ 0,00">
             <p class="hint" id="covValHintDMor" style="margin-top:5px;">Se não souber, deixe em branco — a gente define isso na conversa.</p>
           </div>
@@ -547,38 +580,38 @@
         <div class="divider"></div>
 
         <div class="field" id="vidrosField">
-          <label>Substituição de vidros, retrovisores, faróis e lanternas</label>
+          <label id="segLbl9">Substituição de vidros, retrovisores, faróis e lanternas</label>
           <p class="hint" style="margin:-2px 0 10px;">Opcional — só preencha se quiser contratar essa cobertura.</p>
-          <div class="seg" style="flex-wrap:wrap;">
-            <button type="button" class="seg-btn" data-group="vidros" data-value="076 · Rede referenciada" style="min-width:100%;">076 · Rede referenciada (postos autorizados pela seguradora)</button>
-            <button type="button" class="seg-btn" data-group="vidros" data-value="076R · Livre escolha" style="min-width:100%;">076R · Livre escolha (você escolhe o local)</button>
-            <button type="button" class="seg-btn" data-group="vidros" data-value="Não incluir esta cobertura" style="min-width:100%;">Não incluir esta cobertura</button>
+          <div class="seg" style="flex-wrap:wrap;" role="radiogroup" aria-labelledby="segLbl9">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="vidros" data-value="076 · Rede referenciada" style="min-width:100%;">076 · Rede referenciada (postos autorizados pela seguradora)</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="vidros" data-value="076R · Livre escolha" style="min-width:100%;">076R · Livre escolha (você escolhe o local)</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="vidros" data-value="Não incluir esta cobertura" style="min-width:100%;">Não incluir esta cobertura</button>
           </div>
         </div>
 
         <div class="field" id="carroReservaField">
-          <label>Carro reserva — deseja incluir? <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="carroReserva" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="carroReserva" data-value="Não">Não</button>
+          <label id="segLbl10">Carro reserva — deseja incluir? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl10">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="carroReserva" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="carroReserva" data-value="Não">Não</button>
           </div>
-          <div class="error-msg">Selecione uma opção.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
         <div class="field" id="martelinhoField">
-          <label>Martelinho de ouro — deseja incluir? <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="martelinho" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="martelinho" data-value="Não">Não</button>
+          <label id="segLbl11">Martelinho de ouro — deseja incluir? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl11">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="martelinho" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="martelinho" data-value="Não">Não</button>
           </div>
-          <div class="error-msg">Selecione uma opção.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
         <div class="field">
-          <label>Isenção de 1ª parcela da franquia — deseja incluir? <span class="req">*</span></label>
-          <div class="seg">
-            <button type="button" class="seg-btn" data-group="isencao1" data-value="Sim">Sim</button>
-            <button type="button" class="seg-btn" data-group="isencao1" data-value="Não">Não</button>
+          <label id="segLbl12">Isenção de 1ª parcela da franquia — deseja incluir? <span class="req">*</span></label>
+          <div class="seg" role="radiogroup" aria-labelledby="segLbl12">
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="isencao1" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-group="isencao1" data-value="Não">Não</button>
           </div>
-          <div class="error-msg">Selecione uma opção.</div>
+          <div class="error-msg" aria-live="polite">Selecione uma opção.</div>
         </div>
       </section>
 
@@ -657,17 +690,83 @@
     return "R$ " + parts[0] + "," + parts[1];
   }
 
-  ['seguradoCpf','condutorCpf'].forEach(function(id){
-    els[id] && els[id].addEventListener('input', function(){ this.value = maskCpf(this.value); });
-  });
-  els.cepPernoite && els.cepPernoite.addEventListener('input', function(){ this.value = maskCep(this.value); });
-  els.seguradoTelefone && els.seguradoTelefone.addEventListener('input', function(){ this.value = maskPhone(this.value); });
+  // Máscaras: preferimos o IMask (cursor não pula, letra não entra em campo
+  // numérico). Se o CDN não carregar ou algo der errado, caímos de volta nas
+  // máscaras manuais acima, que já são testadas — o formulário nunca fica
+  // sem máscara nenhuma.
+  var imaskOk = false;
+  if(window.IMask){
+    try{
+      ['seguradoCpf','condutorCpf'].forEach(function(id){
+        els[id] && IMask(els[id], { mask: '000.000.000-00' });
+      });
+      els.cepPernoite && IMask(els.cepPernoite, { mask: '00000-000' });
+      els.seguradoTelefone && IMask(els.seguradoTelefone, {
+        mask: [ { mask: '(00) 0000-0000' }, { mask: '(00) 00000-0000' } ],
+        dispatch: function(appended, dynamicMasked){
+          var num = ((dynamicMasked.value || '') + appended).replace(/\D/g,'');
+          return dynamicMasked.compiledMasks[num.length > 10 ? 1 : 0];
+        }
+      });
+      var CURRENCY_MASK = { mask: 'R$ num', blocks: { num: {
+        mask: Number, thousandsSeparator: '.', radix: ',', scale: 2,
+        padFractionalZeros: true, normalizeZeros: true, min: 0
+      } } };
+      ['valorBlindagem','rcfDanosMateriais','rcfDanosCorporais','app','danosMorais'].forEach(function(id){
+        els[id] && IMask(els[id], CURRENCY_MASK);
+      });
+      imaskOk = true;
+    }catch(e){ imaskOk = false; }
+  }
+  if(!imaskOk){
+    ['seguradoCpf','condutorCpf'].forEach(function(id){
+      els[id] && els[id].addEventListener('input', function(){ this.value = maskCpf(this.value); });
+    });
+    els.cepPernoite && els.cepPernoite.addEventListener('input', function(){ this.value = maskCep(this.value); });
+    els.seguradoTelefone && els.seguradoTelefone.addEventListener('input', function(){ this.value = maskPhone(this.value); });
+    ['valorBlindagem','rcfDanosMateriais','rcfDanosCorporais','app','danosMorais'].forEach(function(id){
+      els[id] && els[id].addEventListener('input', function(){ this.value = maskCurrency(this.value); });
+    });
+  }
   els.veiculoPlaca && els.veiculoPlaca.addEventListener('input', function(){ this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,7); });
-  ['valorBlindagem','rcfDanosMateriais','rcfDanosCorporais','app','danosMorais'].forEach(function(id){
-    els[id] && els[id].addEventListener('input', function(){ this.value = maskCurrency(this.value); });
+
+  // ---------- ViaCEP: preenche cidade/UF sozinho quando o CEP tem 8 dígitos ----------
+  var enderecoPernoite = null; // {cidade, uf, bairro} — vai junto no resumo se for encontrado
+  var cepBuscaAtual = '';
+  els.cepPernoite && els.cepPernoite.addEventListener('input', function(){
+    var digits = onlyDigits(els.cepPernoite.value);
+    if(digits.length !== 8){
+      enderecoPernoite = null;
+      els.cepResultado.style.display = 'none';
+      return;
+    }
+    if(digits === cepBuscaAtual) return; // já buscamos esse CEP
+    cepBuscaAtual = digits;
+    els.cepResultado.style.display = 'none';
+    fetch('https://viacep.com.br/ws/' + digits + '/json/')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(digits !== onlyDigits(els.cepPernoite.value)) return; // usuário já mudou o CEP
+        if(data.erro){
+          enderecoPernoite = null;
+          els.cepResultado.textContent = 'CEP não encontrado — confira os números.';
+          els.cepResultado.style.color = 'var(--danger)';
+          els.cepResultado.style.display = 'block';
+          return;
+        }
+        enderecoPernoite = { cidade: data.localidade, uf: data.uf, bairro: data.bairro };
+        els.cepResultado.textContent = (data.bairro ? data.bairro + ', ' : '') + data.localidade + ' - ' + data.uf;
+        els.cepResultado.style.color = 'var(--text)';
+        els.cepResultado.style.display = 'block';
+      })
+      .catch(function(){
+        // sem internet ou API fora do ar — segue a vida, cidade/UF fica em branco no resumo
+        enderecoPernoite = null;
+        els.cepResultado.style.display = 'none';
+      });
   });
 
-  // year selects
+  // year selects (dropdowns do modo manual)
   (function(){
     var now = new Date().getFullYear();
     var opts = '<option value="">Selecione</option>';
@@ -675,6 +774,139 @@
     els.anoFab.innerHTML = opts;
     els.anoModelo.innerHTML = opts;
   })();
+
+  // ---------- Tabela FIPE (BrasilAPI): Marca → Modelo → Ano ----------
+  // Busca marca/modelo/ano reais em vez de texto livre. Se a API falhar (rede
+  // fora do ar, fonte da FIPE instável — já vimos isso acontecer de verdade)
+  // ou o veículo não estiver na lista, o usuário sempre pode cair pro modo
+  // manual e digitar como antes — nunca fica travado.
+  var FIPE_BASE = 'https://brasilapi.com.br/api/fipe';
+  var veiculoModo = 'fipe'; // 'fipe' | 'manual'
+  var fipeDados = null;     // resultado de /detalhes quando o ano é escolhido
+  var fipeTipoCarregado = null; // 'carros' | 'motos' já carregado nas marcas
+
+  function fipeTipoAtual(){ return seg.tipoVeiculo === 'Moto' ? 'motos' : 'carros'; }
+  function fipeMostrarErro(msg){ els.fipeErro.textContent = msg; els.fipeErro.style.display = 'block'; }
+  function fipeLimparErro(){ els.fipeErro.style.display = 'none'; }
+
+  function fipePreencherSelect(select, itens, labelKey, valueKey, placeholder){
+    var opts = '<option value="">' + placeholder + '</option>';
+    itens.forEach(function(it){
+      opts += '<option value="' + escapeHtml(it[valueKey]) + '">' + escapeHtml(it[labelKey]) + '</option>';
+    });
+    select.innerHTML = opts;
+    select.disabled = false;
+  }
+
+  function resetarModeloEAno(){
+    els.fipeModelo.innerHTML = '<option value="">Selecione a marca primeiro</option>';
+    els.fipeModelo.disabled = true;
+    els.fipeAno.innerHTML = '<option value="">Selecione o modelo primeiro</option>';
+    els.fipeAno.disabled = true;
+    els.fipeResultado.style.display = 'none';
+    fipeDados = null;
+  }
+
+  // Cada etapa da cascata FIPE (marcas → modelos → anos → detalhes) virou uma
+  // função própria que devolve a Promise do fetch — assim tanto os listeners
+  // de "change" quanto a restauração do autosave (que precisa esperar cada
+  // etapa terminar antes de selecionar a próxima) usam o mesmo código.
+  function carregarMarcasFipe(){
+    if(veiculoModo !== 'fipe') return Promise.resolve();
+    var tipo = fipeTipoAtual();
+    if(fipeTipoCarregado === tipo) return Promise.resolve();
+    els.fipeMarca.disabled = true;
+    els.fipeMarca.innerHTML = '<option value="">Carregando marcas…</option>';
+    resetarModeloEAno();
+    fipeLimparErro();
+    return fetch(FIPE_BASE + '/marcas/v1/' + tipo)
+      .then(function(r){ if(!r.ok) throw new Error('status ' + r.status); return r.json(); })
+      .then(function(lista){
+        fipeTipoCarregado = tipo;
+        fipePreencherSelect(els.fipeMarca, lista, 'nome', 'valor', 'Selecione a marca');
+      })
+      .catch(function(){
+        fipeTipoCarregado = null;
+        els.fipeMarca.innerHTML = '<option value="">Não foi possível carregar</option>';
+        fipeMostrarErro('Não conseguimos carregar a lista de marcas agora. Você pode preencher manualmente abaixo.');
+      });
+  }
+
+  function carregarModelosFipe(marcaCodigo){
+    resetarModeloEAno();
+    fipeLimparErro();
+    if(!marcaCodigo) return Promise.resolve();
+    els.fipeModelo.innerHTML = '<option value="">Carregando modelos…</option>';
+    return fetch(FIPE_BASE + '/veiculos/v1/' + fipeTipoAtual() + '/' + marcaCodigo)
+      .then(function(r){ if(!r.ok) throw new Error('status ' + r.status); return r.json(); })
+      .then(function(lista){ fipePreencherSelect(els.fipeModelo, lista, 'modelo', 'valor', 'Selecione o modelo'); })
+      .catch(function(){
+        els.fipeModelo.innerHTML = '<option value="">Não foi possível carregar</option>';
+        fipeMostrarErro('Não conseguimos carregar os modelos dessa marca agora. Você pode preencher manualmente abaixo.');
+      });
+  }
+
+  function carregarAnosFipe(marcaCodigo, modeloCodigo){
+    els.fipeAno.innerHTML = '<option value="">Selecione o modelo primeiro</option>';
+    els.fipeAno.disabled = true;
+    els.fipeResultado.style.display = 'none';
+    fipeDados = null;
+    fipeLimparErro();
+    if(!modeloCodigo) return Promise.resolve();
+    els.fipeAno.innerHTML = '<option value="">Carregando anos…</option>';
+    return fetch(FIPE_BASE + '/anos/v1/' + fipeTipoAtual() + '/' + marcaCodigo + '/' + modeloCodigo)
+      .then(function(r){ if(!r.ok) throw new Error('status ' + r.status); return r.json(); })
+      .then(function(lista){ fipePreencherSelect(els.fipeAno, lista, 'nome', 'valor', 'Selecione o ano'); })
+      .catch(function(){
+        els.fipeAno.innerHTML = '<option value="">Não foi possível carregar</option>';
+        fipeMostrarErro('Não conseguimos carregar os anos desse modelo agora. Você pode preencher manualmente abaixo.');
+      });
+  }
+
+  function carregarDetalhesFipe(marcaCodigo, modeloCodigo, anoCodigo){
+    fipeDados = null;
+    els.fipeResultado.style.display = 'none';
+    fipeLimparErro();
+    if(!anoCodigo) return Promise.resolve();
+    return fetch(FIPE_BASE + '/detalhes/v1/' + fipeTipoAtual() + '/' + marcaCodigo + '/' + modeloCodigo + '/' + encodeURIComponent(anoCodigo))
+      .then(function(r){ if(!r.ok) throw new Error('status ' + r.status); return r.json(); })
+      .then(function(dados){
+        fipeDados = dados;
+        els.fipeResultado.textContent = 'Valor de referência FIPE: ' + dados.valor + ' · Código FIPE: ' + dados.codigoFipe;
+        els.fipeResultado.style.display = 'block';
+      })
+      .catch(function(){
+        fipeMostrarErro('Não conseguimos consultar o valor FIPE agora, mas o modelo e ano escolhidos já foram salvos.');
+      });
+  }
+
+  els.fipeMarca.addEventListener('change', function(){
+    carregarModelosFipe(els.fipeMarca.value);
+    autosave();
+  });
+  els.fipeModelo.addEventListener('change', function(){
+    carregarAnosFipe(els.fipeMarca.value, els.fipeModelo.value);
+    autosave();
+  });
+  els.fipeAno.addEventListener('change', function(){
+    carregarDetalhesFipe(els.fipeMarca.value, els.fipeModelo.value, els.fipeAno.value);
+    autosave();
+  });
+
+  function setVeiculoModo(modo){
+    veiculoModo = modo;
+    var isFipe = modo === 'fipe';
+    els.fipeMarcaField.hidden = !isFipe;
+    els.fipeModeloField.hidden = !isFipe;
+    els.fipeAnoField.hidden = !isFipe;
+    els.fipeManualToggleWrap.hidden = !isFipe;
+    if(!isFipe){ els.fipeResultado.style.display = 'none'; fipeLimparErro(); }
+    els.modeloManualWrap.hidden = isFipe;
+    if(isFipe) carregarMarcasFipe();
+    autosave();
+  }
+  els.toggleModeloManual.addEventListener('click', function(){ setVeiculoModo('manual'); });
+  els.toggleModeloFipe.addEventListener('click', function(){ setVeiculoModo('fipe'); });
 
   // Limites de data de nascimento: o navegador já trava o calendário nesse
   // intervalo (não deixa escolher/rolar pra fora dele), e a gente confere
@@ -707,24 +939,38 @@
   }
 
   // ---------- segmented controls ----------
+  // Mantém a classe visual .on e o aria-checked (acessibilidade, role="radio")
+  // sempre em sincronia — usado tanto no clique do usuário quanto nos vários
+  // lugares que resetam um grupo programaticamente (troca carro/moto, etc.).
+  function setSegBtnOn(btn, on){
+    btn.classList.toggle('on', !!on);
+    btn.setAttribute('aria-checked', on ? 'true' : 'false');
+  }
+  function clearSegGroup(group){
+    $all('.seg-btn[data-group="'+group+'"]').forEach(function(b){ setSegBtnOn(b, false); });
+  }
   $all('.seg-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       var group = btn.dataset.group;
       var value = btn.dataset.value;
       seg[group] = value;
-      $all('.seg-btn[data-group="'+group+'"]').forEach(function(b){ b.classList.toggle('on', b === btn); });
+      $all('.seg-btn[data-group="'+group+'"]').forEach(function(b){ setSegBtnOn(b, b === btn); });
       clearFieldError(btn.closest('.field'));
       onSegChange(group, value);
+      autosave();
     });
   });
 
+  // Devolve a Promise da recarga da FIPE quando o grupo é 'tipoVeiculo' (usado
+  // pela restauração do autosave pra saber quando pode escolher marca/modelo/
+  // ano salvos); nos demais casos não há nada assíncrono, então não retorna nada.
   function onSegChange(group, value){
     if(group === 'tipoSeguro'){ els.renovacaoBox.hidden = value !== 'Renovação'; updateCoverageLabels(); }
     if(group === 'zeroKm'){ els.dataRetiradaBox.hidden = value !== 'Sim'; }
     if(group === 'antifurto'){ els.antifurtoBox.hidden = value !== 'Sim'; }
     if(group === 'blindado'){ els.blindadoBox.hidden = value !== 'Sim'; }
     if(group === 'usoVeiculo'){ els.usoOutrosBox.hidden = value !== 'Outros'; }
-    if(group === 'tipoVeiculo'){ syncVeiculoTipo(value); }
+    if(group === 'tipoVeiculo'){ return syncVeiculoTipo(value); }
     var covItem = COVERAGE_ITEMS.filter(function(c){ return c.group === group; })[0];
     if(covItem){
       els[covItem.valId].hidden = value !== 'Sim';
@@ -767,6 +1013,12 @@
 
   function syncVeiculoTipo(value){
     var isMoto = value === 'Moto';
+    // Marca/modelo/ano da FIPE são específicos de carro ou moto — reseta e
+    // recarrega a lista de marcas pro tipo escolhido.
+    fipeTipoCarregado = null;
+    els.fipeMarca.value = '';
+    resetarModeloEAno();
+    var fipePromise = carregarMarcasFipe();
     CARRO_ONLY_FIELDS.forEach(function(id){
       if(els[id]) els[id].hidden = isMoto;
     });
@@ -777,7 +1029,7 @@
       els.valorBlindagem.value = '';
       CARRO_ONLY_SEG_GROUPS.forEach(function(group){
         seg[group] = undefined;
-        $all('.seg-btn[data-group="'+group+'"]').forEach(function(b){ b.classList.remove('on'); });
+        clearSegGroup(group);
       });
       els.blindadoBox.hidden = true;
     }
@@ -786,7 +1038,7 @@
     if(els.usoTaxiBtn.dataset.value !== novoValorTaxi){
       if(seg.usoVeiculo === els.usoTaxiBtn.dataset.value){
         seg.usoVeiculo = undefined;
-        els.usoTaxiBtn.classList.remove('on');
+        setSegBtnOn(els.usoTaxiBtn, false);
       }
       els.usoTaxiBtn.dataset.value = novoValorTaxi;
       els.usoTaxiBtn.textContent = novoValorTaxi;
@@ -795,8 +1047,9 @@
     els.usoEscolarBtn.hidden = isMoto;
     if(isMoto && seg.usoVeiculo === 'Escolar'){
       seg.usoVeiculo = undefined;
-      els.usoEscolarBtn.classList.remove('on');
+      setSegBtnOn(els.usoEscolarBtn, false);
     }
+    return fipePromise;
   }
 
   // condutor = segurado toggle
@@ -872,9 +1125,15 @@
     }
     if(n === 4){
       needSeg('tipoVeiculo');
-      need(els.veiculoModelo.value.trim(), els.veiculoModelo);
-      need(els.anoFab.value, els.anoFab);
-      need(els.anoModelo.value, els.anoModelo);
+      if(veiculoModo === 'fipe'){
+        need(els.fipeMarca.value, els.fipeMarcaField);
+        need(els.fipeModelo.value, els.fipeModeloField);
+        need(els.fipeAno.value, els.fipeAnoField);
+      } else {
+        need(els.veiculoModelo.value.trim(), els.veiculoModelo);
+        need(els.anoFab.value, els.anoFab);
+        need(els.anoModelo.value, els.anoModelo);
+      }
       if(seg.tipoVeiculo !== 'Moto'){
         need(els.qtdPortas.value, els.qtdPortas);
       }
@@ -919,12 +1178,24 @@
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
+  // ---------- rastreamento (analytics) ----------
+  // Aqui é onde a corretora pode plugar o Meta Pixel (fbq('track', ...)) ou o
+  // GA4 (gtag('event', ...)) pra medir em qual etapa as pessoas desistem do
+  // formulário. Por enquanto só loga no console.
+  function trackStepCompletion(stepNumber){
+    console.log('Passo ' + stepNumber + ' concluído');
+    // TODO: chamar aqui o Meta Pixel / GA4, ex.:
+    // if(window.fbq) fbq('trackCustom', 'PassoConcluido', { passo: stepNumber });
+    // if(window.gtag) gtag('event', 'passo_concluido', { passo: stepNumber });
+  }
+
   els.btnNext.addEventListener('click', function(){
     if(!validateStep(current)){
       var firstErr = $('.step[data-step="'+current+'"] .has-error');
       if(firstErr) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
       return;
     }
+    trackStepCompletion(current);
     if(current < TOTAL_STEPS){ current++; showStep(current); }
   });
   els.btnBack.addEventListener('click', function(){
@@ -952,7 +1223,7 @@
       ['CPF', textOf(els.seguradoCpf)],
       ['Nascimento', textOf(els.seguradoNasc)],
       ['Estado civil', textOf(els.seguradoEstadoCivil)],
-      ['CEP de pernoite', textOf(els.cepPernoite)],
+      ['CEP de pernoite', textOf(els.cepPernoite) + (enderecoPernoite ? ' (' + (enderecoPernoite.bairro ? enderecoPernoite.bairro + ', ' : '') + enderecoPernoite.cidade + ' - ' + enderecoPernoite.uf + ')' : '')],
       ['Telefone', textOf(els.seguradoTelefone)],
       ['E-mail', textOf(els.seguradoEmail)]
     ]]);
@@ -968,12 +1239,26 @@
     L.push(['CONDUTOR PRINCIPAL', 3, condutorRows]);
 
     var isMoto = seg.tipoVeiculo === 'Moto';
+    function selectedText(select){
+      var opt = select.options[select.selectedIndex];
+      return (opt && opt.value) ? opt.textContent : '—';
+    }
     var veicRows = [
-      ['Tipo de veículo', seg.tipoVeiculo || '—'],
-      ['Modelo', textOf(els.veiculoModelo)],
-      ['Ano fab. / modelo', textOf(els.anoFab) + ' / ' + textOf(els.anoModelo)],
-      ['Placa', textOf(els.veiculoPlaca)]
+      ['Tipo de veículo', seg.tipoVeiculo || '—']
     ];
+    if(veiculoModo === 'fipe'){
+      veicRows.push(['Marca', selectedText(els.fipeMarca)]);
+      veicRows.push(['Modelo', selectedText(els.fipeModelo)]);
+      veicRows.push(['Ano/combustível', selectedText(els.fipeAno)]);
+      if(fipeDados){
+        veicRows.push(['Valor FIPE (referência)', fipeDados.valor || '—']);
+        veicRows.push(['Código FIPE', fipeDados.codigoFipe || '—']);
+      }
+    } else {
+      veicRows.push(['Modelo', textOf(els.veiculoModelo)]);
+      veicRows.push(['Ano fab. / modelo', textOf(els.anoFab) + ' / ' + textOf(els.anoModelo)]);
+    }
+    veicRows.push(['Placa', textOf(els.veiculoPlaca)]);
     if(!isMoto) veicRows.push(['Qtd. de portas', textOf(els.qtdPortas)]);
     veicRows.push(['Chassi', textOf(els.veiculoChassi)]);
     veicRows.push(['0 km', seg.zeroKm || '—']);
@@ -1058,10 +1343,146 @@
   function setupSend(groups){
     var summary = buildPlainSummary(groups);
     els.sendWhatsapp.href = 'https://wa.me/' + WHATSAPP_NUMERO + '?text=' + encodeURIComponent(summary);
-    els.sendWhatsapp.onclick = function(){ els.doneWrap.hidden = false; };
+    els.sendWhatsapp.onclick = function(){
+      els.doneWrap.hidden = false;
+      // Cotação já foi montada e enviada pro WhatsApp — não faz sentido guardar
+      // os dados (incluindo CPF) no navegador depois disso.
+      limparAutosave();
+    };
   }
 
-  showStep(1);
+  // ---------- autosave (localStorage) ----------
+  // Guarda o progresso do formulário no navegador pra a pessoa não perder tudo
+  // se atualizar a página sem querer. Alguns cuidados:
+  // - Some silenciosamente se o localStorage não existir/estiver bloqueado
+  //   (modo privado, por exemplo) — nunca deixa o formulário quebrar por isso.
+  // - É limpo automaticamente depois que a cotação é enviada pro WhatsApp,
+  //   já que guarda dados pessoais (CPF, nome, etc.) e não faz sentido manter
+  //   isso salvo no navegador depois que o envio já aconteceu.
+  var AUTOSAVE_KEY = 'arcaCotacaoAutoMoto_v1';
+  var AUTOSAVE_SKIP_IDS = { fipeMarca:1, fipeModelo:1, fipeAno:1 }; // restaurados à parte (cascata assíncrona)
+  var autosaveTimer = null;
+
+  function autosave(){
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(function(){
+      try{
+        var data = { fields:{}, seg:seg, veiculoModo:veiculoModo, current:current, savedAt:Date.now() };
+        $all('input, select, textarea').forEach(function(el){
+          if(!el.id || AUTOSAVE_SKIP_IDS[el.id]) return;
+          data.fields[el.id] = (el.type === 'checkbox' || el.type === 'radio') ? el.checked : el.value;
+        });
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(data));
+      }catch(e){ /* localStorage indisponível — segue sem autosave, sem quebrar o formulário */ }
+    }, 250);
+  }
+
+  function limparAutosave(){
+    try{ localStorage.removeItem(AUTOSAVE_KEY); }catch(e){}
+  }
+
+  function lerAutosave(){
+    try{
+      var raw = localStorage.getItem(AUTOSAVE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){ return null; }
+  }
+
+  function optionExists(select, value){
+    return Array.prototype.some.call(select.options, function(o){ return o.value === value; });
+  }
+
+  // Restaura os campos "normais" (inputs/selects, exceto marca/modelo/ano da
+  // FIPE) e dispara input/change em cada um — isso já reaproveita os
+  // listeners existentes (ViaCEP, IMask, syncCondutor) sem precisar duplicar
+  // lógica aqui.
+  function restaurarCampos(fields){
+    if(!fields) return;
+    Object.keys(fields).forEach(function(id){
+      var el = els[id];
+      if(!el || AUTOSAVE_SKIP_IDS[id]) return;
+      if(el.type === 'checkbox' || el.type === 'radio'){ el.checked = !!fields[id]; }
+      else { el.value = fields[id]; }
+      el.dispatchEvent(new Event('input', { bubbles:true }));
+      el.dispatchEvent(new Event('change', { bubbles:true }));
+    });
+  }
+
+  // Restaura os grupos de botões segmentados (seg). Ordem importa: tipoSeguro
+  // e tipoVeiculo primeiro, porque eles mudam rótulos/visibilidade de outros
+  // campos (ex.: Táxi vira Mototáxi em moto) — os demais grupos só encontram
+  // o botão certo depois dessa troca já ter acontecido.
+  function restaurarSeg(savedSeg){
+    if(!savedSeg) return null;
+    var tipoVeiculoPromise = null;
+    function aplicar(group){
+      var value = savedSeg[group];
+      if(value === undefined || value === null) return;
+      var btns = $all('.seg-btn[data-group="' + group + '"]');
+      var alvo = btns.filter(function(b){ return b.dataset.value === value; })[0];
+      if(!alvo) return;
+      seg[group] = value;
+      btns.forEach(function(b){ setSegBtnOn(b, b === alvo); });
+      var resultado = onSegChange(group, value);
+      if(group === 'tipoVeiculo') tipoVeiculoPromise = resultado;
+    }
+    var prioridade = ['tipoSeguro', 'tipoVeiculo'];
+    prioridade.forEach(aplicar);
+    Object.keys(savedSeg).forEach(function(group){
+      if(prioridade.indexOf(group) === -1) aplicar(group);
+    });
+    return tipoVeiculoPromise;
+  }
+
+  // A cascata da FIPE é assíncrona (marca → modelo → ano → detalhes), então só
+  // dá pra selecionar cada select depois que o anterior carregou de verdade —
+  // por isso espera a Promise de cada etapa (retornada pelas funções
+  // carregarXFipe) antes de seguir pra próxima.
+  function restaurarFipe(savedFields, tipoVeiculoPromise){
+    if(!savedFields || veiculoModo !== 'fipe') return;
+    var marca = savedFields.fipeMarca, modelo = savedFields.fipeModelo, ano = savedFields.fipeAno;
+    if(!marca) return;
+    Promise.resolve(tipoVeiculoPromise).then(function(){
+      if(!optionExists(els.fipeMarca, marca)) return;
+      els.fipeMarca.value = marca;
+      return carregarModelosFipe(marca);
+    }).then(function(){
+      if(!modelo || !optionExists(els.fipeModelo, modelo)) return;
+      els.fipeModelo.value = modelo;
+      return carregarAnosFipe(marca, modelo);
+    }).then(function(){
+      if(!ano || !optionExists(els.fipeAno, ano)) return;
+      els.fipeAno.value = ano;
+      return carregarDetalhesFipe(marca, modelo, ano);
+    }).catch(function(){ /* restauração parcial é aceitável — a pessoa pode reselecionar */ });
+  }
+
+  // Devolve a etapa em que a pessoa estava (pra reabrir o formulário já na
+  // etapa certa, e não sempre na 1) — ou null se não havia nada salvo.
+  function restaurarAutosave(){
+    var data = lerAutosave();
+    if(!data) return null;
+    restaurarCampos(data.fields);
+    if(data.veiculoModo === 'manual') setVeiculoModo('manual');
+    var tipoVeiculoPromise = restaurarSeg(data.seg);
+    restaurarFipe(data.fields, tipoVeiculoPromise);
+    var etapa = parseInt(data.current, 10);
+    return (etapa >= 1 && etapa <= TOTAL_STEPS) ? etapa : null;
+  }
+
+  // Salva a cada alteração de campo de texto/select (delegado no documento,
+  // pra não precisar de um listener por input) — os cliques nos seg-btn já
+  // chamam autosave() diretamente no handler deles.
+  document.addEventListener('input', function(e){
+    if(e.target && e.target.id) autosave();
+  });
+  document.addEventListener('change', function(e){
+    if(e.target && e.target.id) autosave();
+  });
+
+  var etapaRestaurada = restaurarAutosave();
+  current = etapaRestaurada || 1;
+  showStep(current);
 })();
 </script>
 </body>
