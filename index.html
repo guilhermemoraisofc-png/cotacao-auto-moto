@@ -164,14 +164,6 @@
   .send-btn .tx span{font-size:12px;color:var(--text-2);}
   .send-btn.primary{border-color:var(--accent);background:var(--accent-soft);}
   .send-btn.primary .ic{background:var(--accent);color:var(--accent-ink);}
-  .send-btn.copy .ic{background:var(--surface-2);}
-
-  .toast{
-    position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(8px);
-    background:var(--text);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:13px;font-weight:600;
-    opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;z-index:20;
-  }
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
   .done-wrap{text-align:center;padding:30px 6px 6px;}
   .done-icon{width:56px;height:56px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px;}
@@ -201,12 +193,12 @@
 
       <!-- STEP 1: TIPO DE SEGURO -->
       <section class="step" data-step="1">
-        <div class="step-title"><span class="step-num">1</span>Tipo de seguro</div>
+        <div class="step-title"><span class="step-num">1</span>Tipo de Seguro</div>
         <p class="step-desc">É a sua primeira apólice conosco ou uma renovação de um seguro já existente?</p>
 
         <div class="field">
           <div class="seg" id="tipoSeguroSeg">
-            <button type="button" class="seg-btn" data-group="tipoSeguro" data-value="Seguro Novo">Seguro novo</button>
+            <button type="button" class="seg-btn" data-group="tipoSeguro" data-value="Seguro Novo">Seguro Novo</button>
             <button type="button" class="seg-btn" data-group="tipoSeguro" data-value="Renovação">Renovação</button>
           </div>
           <div class="error-msg">Selecione uma opção para continuar.</div>
@@ -250,7 +242,7 @@
 
       <!-- STEP 2: DADOS DO SEGURADO -->
       <section class="step" data-step="2" hidden>
-        <div class="step-title"><span class="step-num">2</span>Dados do segurado</div>
+        <div class="step-title"><span class="step-num">2</span>Dados do Segurado</div>
         <p class="step-desc">A pessoa titular da apólice — em quem nome o seguro será feito.</p>
 
         <div class="field">
@@ -267,7 +259,7 @@
           <div class="field">
             <label>Data de nascimento <span class="req">*</span></label>
             <input type="date" id="seguradoNasc">
-            <div class="error-msg">Informe a data de nascimento.</div>
+            <div class="error-msg">Data de nascimento inválida — confira o dia, mês e ano.</div>
           </div>
         </div>
         <div class="field">
@@ -301,7 +293,7 @@
 
       <!-- STEP 3: CONDUTOR PRINCIPAL -->
       <section class="step" data-step="3" hidden>
-        <div class="step-title"><span class="step-num">3</span>Condutor principal</div>
+        <div class="step-title"><span class="step-num">3</span>Condutor Principal</div>
         <p class="step-desc">É quem dirige o veículo com maior frequência. Se houver mais de um condutor, considere o mais jovem — isso influencia diretamente o preço do seguro.</p>
 
         <label class="check-row" style="margin-bottom:16px;">
@@ -324,7 +316,7 @@
             <div class="field">
               <label>Data de nascimento <span class="req">*</span></label>
               <input type="date" id="condutorNasc">
-              <div class="error-msg">Informe a data de nascimento.</div>
+              <div class="error-msg">Data de nascimento inválida — confira o dia, mês e ano.</div>
             </div>
           </div>
           <div class="field">
@@ -341,7 +333,7 @@
 
       <!-- STEP 4: DADOS DO VEÍCULO -->
       <section class="step" data-step="4" hidden>
-        <div class="step-title"><span class="step-num">4</span>Dados do veículo</div>
+        <div class="step-title"><span class="step-num">4</span>Dados do Veículo</div>
         <p class="step-desc">Informações do carro ou moto a ser segurado.</p>
 
         <div class="field">
@@ -474,7 +466,7 @@
 
       <!-- STEP 5: USO DO VEÍCULO -->
       <section class="step" data-step="5" hidden>
-        <div class="step-title"><span class="step-num">5</span>Uso do veículo</div>
+        <div class="step-title"><span class="step-num">5</span>Uso do Veículo</div>
         <p class="step-desc">Qual é a finalidade principal de uso do veículo?</p>
 
         <div class="field">
@@ -497,27 +489,58 @@
 
       <!-- STEP 6: COBERTURAS -->
       <section class="step" data-step="6" hidden>
-        <div class="step-title"><span class="step-num">6</span>Coberturas desejadas</div>
-        <p class="step-desc">Informe os valores que você gostaria de contratar. Se ainda não souber, pode deixar em branco e conversamos sobre isso antes de fechar a cotação.</p>
+        <div class="step-title"><span class="step-num">6</span>Coberturas Desejadas</div>
+        <p class="step-desc" id="coberturasDesc">Diga quais coberturas você quer incluir. Se souber o valor, ótimo — se não, é só deixar em branco que a gente acerta isso na conversa.</p>
 
-        <div class="row2">
-          <div class="field">
-            <label>Danos materiais a terceiros (R$)</label>
-            <input type="text" id="rcfDanosMateriais" inputmode="numeric" placeholder="R$ 0,00">
+        <div class="field" id="covWrapDM">
+          <label id="covQDM">Quer contratar cobertura de danos materiais a terceiros?</label>
+          <div class="seg">
+            <button type="button" class="seg-btn" data-group="covDM" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" data-group="covDM" data-value="Não">Não</button>
           </div>
-          <div class="field">
-            <label>Danos corporais a terceiros (R$)</label>
-            <input type="text" id="rcfDanosCorporais" inputmode="numeric" placeholder="R$ 0,00">
+          <div class="field" id="covValDM" hidden style="margin:10px 0 0;">
+            <label id="covValLabelDM">Valor desejado, se já souber (R$)</label>
+            <input type="text" id="rcfDanosMateriais" inputmode="numeric" placeholder="R$ 0,00">
+            <p class="hint" id="covValHintDM" style="margin-top:5px;">Se não souber, deixe em branco — a gente define isso na conversa.</p>
           </div>
         </div>
-        <div class="row2">
-          <div class="field">
-            <label>Acidentes pessoais a passageiros (R$)</label>
-            <input type="text" id="app" inputmode="numeric" placeholder="R$ 0,00">
+
+        <div class="field" id="covWrapDC">
+          <label id="covQDC">Quer contratar cobertura de danos corporais a terceiros?</label>
+          <div class="seg">
+            <button type="button" class="seg-btn" data-group="covDC" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" data-group="covDC" data-value="Não">Não</button>
           </div>
-          <div class="field">
-            <label>Danos morais (R$)</label>
+          <div class="field" id="covValDC" hidden style="margin:10px 0 0;">
+            <label id="covValLabelDC">Valor desejado, se já souber (R$)</label>
+            <input type="text" id="rcfDanosCorporais" inputmode="numeric" placeholder="R$ 0,00">
+            <p class="hint" id="covValHintDC" style="margin-top:5px;">Se não souber, deixe em branco — a gente define isso na conversa.</p>
+          </div>
+        </div>
+
+        <div class="field" id="covWrapAPP">
+          <label id="covQAPP">Quer contratar cobertura de acidentes pessoais a passageiros (APP)?</label>
+          <div class="seg">
+            <button type="button" class="seg-btn" data-group="covAPP" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" data-group="covAPP" data-value="Não">Não</button>
+          </div>
+          <div class="field" id="covValAPP" hidden style="margin:10px 0 0;">
+            <label id="covValLabelAPP">Valor desejado, se já souber (R$)</label>
+            <input type="text" id="app" inputmode="numeric" placeholder="R$ 0,00">
+            <p class="hint" id="covValHintAPP" style="margin-top:5px;">Se não souber, deixe em branco — a gente define isso na conversa.</p>
+          </div>
+        </div>
+
+        <div class="field" id="covWrapDMor">
+          <label id="covQDMor">Quer contratar cobertura de danos morais?</label>
+          <div class="seg">
+            <button type="button" class="seg-btn" data-group="covDMor" data-value="Sim">Sim</button>
+            <button type="button" class="seg-btn" data-group="covDMor" data-value="Não">Não</button>
+          </div>
+          <div class="field" id="covValDMor" hidden style="margin:10px 0 0;">
+            <label id="covValLabelDMor">Valor desejado, se já souber (R$)</label>
             <input type="text" id="danosMorais" inputmode="numeric" placeholder="R$ 0,00">
+            <p class="hint" id="covValHintDMor" style="margin-top:5px;">Se não souber, deixe em branco — a gente define isso na conversa.</p>
           </div>
         </div>
 
@@ -561,7 +584,7 @@
 
       <!-- STEP 7: REVISÃO E ENVIO -->
       <section class="step" data-step="7" hidden>
-        <div class="step-title"><span class="step-num">7</span>Revisão e envio</div>
+        <div class="step-title"><span class="step-num">7</span>Revisão e Envio</div>
         <p class="step-desc">Confira suas respostas antes de enviar. Clique em "editar" para corrigir qualquer seção.</p>
         <div id="reviewContent"></div>
 
@@ -572,12 +595,8 @@
             <span class="ic">💬</span>
             <span class="tx"><b>Enviar por WhatsApp</b><span>Abre uma conversa com a corretora já com tudo preenchido</span></span>
           </a>
-          <button type="button" class="send-btn copy" id="sendCopy">
-            <span class="ic">📋</span>
-            <span class="tx"><b>Copiar resumo</b><span>Cole onde preferir enviar</span></span>
-          </button>
         </div>
-        <p class="hint" style="margin-top:10px;">Se o WhatsApp não abrir automaticamente, use "copiar resumo" acima e cole numa conversa ou e-mail para <strong>guilherme@arcaseg.com.br</strong>.</p>
+        <p class="hint" style="margin-top:10px;">Se o WhatsApp não abrir automaticamente, entre em contato pelo número <strong>(11) 96634-5215</strong>.</p>
 
         <div class="done-wrap" id="doneWrap" hidden>
           <div class="done-icon">✓</div>
@@ -597,13 +616,10 @@
   </div>
 </div>
 
-<div class="toast" id="toast">Resumo copiado!</div>
-
 <script>
 (function(){
   var TOTAL_STEPS = 7;
   var current = 1;
-  var EMAIL_DESTINO = "guilherme@arcaseg.com.br";
   var WHATSAPP_NUMERO = "5511966345215";
 
   var seg = {}; // segmented-control state, keyed by group name
@@ -660,6 +676,36 @@
     els.anoModelo.innerHTML = opts;
   })();
 
+  // Limites de data de nascimento: o navegador já trava o calendário nesse
+  // intervalo (não deixa escolher/rolar pra fora dele), e a gente confere
+  // de novo no validateStep pra pegar quem digitar a data na mão.
+  var IDADE_MIN = 18, IDADE_MAX = 100;
+  function fmtDate(d){
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  (function(){
+    var hoje = new Date();
+    var maxNasc = new Date(hoje.getFullYear()-IDADE_MIN, hoje.getMonth(), hoje.getDate());
+    var minNasc = new Date(hoje.getFullYear()-IDADE_MAX, hoje.getMonth(), hoje.getDate());
+    [els.seguradoNasc, els.condutorNasc].forEach(function(el){
+      if(!el) return;
+      el.min = fmtDate(minNasc);
+      el.max = fmtDate(maxNasc);
+    });
+  })();
+  function validBirthDate(v){
+    if(!v) return false;
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+    if(!m) return false;
+    var d = new Date(v + 'T00:00:00');
+    if(isNaN(d.getTime())) return false;
+    // confere se o navegador não "corrigiu" um dia/mês inválido sozinho
+    if(d.getFullYear() !== parseInt(m[1],10) || (d.getMonth()+1) !== parseInt(m[2],10) || d.getDate() !== parseInt(m[3],10)) return false;
+    var hoje = new Date();
+    var idade = hoje.getFullYear() - d.getFullYear() - ((hoje.getMonth() < d.getMonth() || (hoje.getMonth() === d.getMonth() && hoje.getDate() < d.getDate())) ? 1 : 0);
+    return idade >= IDADE_MIN && idade <= IDADE_MAX;
+  }
+
   // ---------- segmented controls ----------
   $all('.seg-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -673,13 +719,45 @@
   });
 
   function onSegChange(group, value){
-    if(group === 'tipoSeguro'){ els.renovacaoBox.hidden = value !== 'Renovação'; }
+    if(group === 'tipoSeguro'){ els.renovacaoBox.hidden = value !== 'Renovação'; updateCoverageLabels(); }
     if(group === 'zeroKm'){ els.dataRetiradaBox.hidden = value !== 'Sim'; }
     if(group === 'antifurto'){ els.antifurtoBox.hidden = value !== 'Sim'; }
     if(group === 'blindado'){ els.blindadoBox.hidden = value !== 'Sim'; }
     if(group === 'usoVeiculo'){ els.usoOutrosBox.hidden = value !== 'Outros'; }
     if(group === 'tipoVeiculo'){ syncVeiculoTipo(value); }
+    var covItem = COVERAGE_ITEMS.filter(function(c){ return c.group === group; })[0];
+    if(covItem){
+      els[covItem.valId].hidden = value !== 'Sim';
+      if(value !== 'Sim'){ els[covItem.inputId].value = ''; }
+    }
   }
+
+  // Perguntas de "Coberturas desejadas": primeiro pergunta se quer/tem a
+  // cobertura (Sim/Não), só depois libera o campo de valor — e o texto muda
+  // conforme é seguro novo (valor é opcional, "se já souber") ou renovação
+  // (queremos saber o valor já contratado hoje, pra cotar igual ou melhor).
+  var COVERAGE_ITEMS = [
+    { group:'covDM',   suffix:'DM',   nome:'danos materiais a terceiros', inputId:'rcfDanosMateriais', valId:'covValDM' },
+    { group:'covDC',   suffix:'DC',   nome:'danos corporais a terceiros', inputId:'rcfDanosCorporais', valId:'covValDC' },
+    { group:'covAPP',  suffix:'APP',  nome:'acidentes pessoais a passageiros (APP)', inputId:'app', valId:'covValAPP' },
+    { group:'covDMor', suffix:'DMor', nome:'danos morais', inputId:'danosMorais', valId:'covValDMor' }
+  ];
+  function updateCoverageLabels(){
+    var isRenovacao = seg.tipoSeguro === 'Renovação';
+    els.coberturasDesc.textContent = isRenovacao ?
+      'Conte pra gente quais coberturas você já tem no seguro atual e por quanto — assim conseguimos cotar igual ou melhor.' :
+      'Diga quais coberturas você quer incluir. Se souber o valor, ótimo — se não, é só deixar em branco que a gente acerta isso na conversa.';
+    COVERAGE_ITEMS.forEach(function(c){
+      els['covQ'+c.suffix].textContent = isRenovacao ?
+        'Você tem cobertura de ' + c.nome + ' no seguro atual?' :
+        'Quer contratar cobertura de ' + c.nome + '?';
+      els['covValLabel'+c.suffix].textContent = isRenovacao ? 'Valor contratado atualmente (R$)' : 'Valor desejado, se já souber (R$)';
+      els['covValHint'+c.suffix].textContent = isRenovacao ?
+        'Isso ajuda a gente a te dar uma cotação igual ou melhor que a atual.' :
+        'Se não souber, deixe em branco — a gente define isso na conversa.';
+    });
+  }
+  updateCoverageLabels();
 
   // Itens que só existem/fazem sentido em carro: portas, kit-gás, blindagem,
   // vidros (parabrisa/vigia), carro reserva e martelinho de ouro (funilaria
@@ -780,7 +858,7 @@
     if(n === 2){
       need(els.seguradoNome.value.trim(), els.seguradoNome);
       need(validCpf(els.seguradoCpf.value), els.seguradoCpf);
-      need(els.seguradoNasc.value, els.seguradoNasc);
+      need(validBirthDate(els.seguradoNasc.value), els.seguradoNasc);
       need(els.seguradoEstadoCivil.value, els.seguradoEstadoCivil);
       need(validCep(els.cepPernoite.value), els.cepPernoite);
       need(validPhone(els.seguradoTelefone.value), els.seguradoTelefone);
@@ -789,7 +867,7 @@
     if(n === 3 && !els.condutorIgualSegurado.checked){
       need(els.condutorNome.value.trim(), els.condutorNome);
       need(validCpf(els.condutorCpf.value), els.condutorCpf);
-      need(els.condutorNasc.value, els.condutorNasc);
+      need(validBirthDate(els.condutorNasc.value), els.condutorNasc);
       need(els.condutorEstadoCivil.value, els.condutorEstadoCivil);
     }
     if(n === 4){
@@ -922,10 +1000,16 @@
     L.push(['USO DO VEÍCULO', 5, usoRows]);
 
     var covRows = [];
-    covRows.push(['Danos materiais a terceiros', textOf(els.rcfDanosMateriais)]);
-    covRows.push(['Danos corporais a terceiros', textOf(els.rcfDanosCorporais)]);
-    covRows.push(['Acidentes pessoais a passageiros', textOf(els.app)]);
-    covRows.push(['Danos morais', textOf(els.danosMorais)]);
+    var covLabels = { covDM:'Danos materiais a terceiros', covDC:'Danos corporais a terceiros', covAPP:'Acidentes pessoais a passageiros', covDMor:'Danos morais' };
+    COVERAGE_ITEMS.forEach(function(c){
+      var resposta = seg[c.group];
+      var valorBruto = els[c.inputId].value.trim();
+      var texto;
+      if(resposta === 'Sim') texto = valorBruto ? valorBruto : 'Sim (valor a combinar)';
+      else if(resposta === 'Não') texto = 'Não';
+      else texto = 'Não informado';
+      covRows.push([covLabels[c.group], texto]);
+    });
     if(!isMoto){
       covRows.push(['Substituição de vidros', seg.vidros || 'Não informado']);
       covRows.push(['Carro reserva', seg.carroReserva || '—']);
@@ -975,27 +1059,6 @@
     var summary = buildPlainSummary(groups);
     els.sendWhatsapp.href = 'https://wa.me/' + WHATSAPP_NUMERO + '?text=' + encodeURIComponent(summary);
     els.sendWhatsapp.onclick = function(){ els.doneWrap.hidden = false; };
-
-    els.sendCopy.onclick = function(){
-      var done = function(){
-        els.doneWrap.hidden = false;
-        els.toast.classList.add('show');
-        setTimeout(function(){ els.toast.classList.remove('show'); }, 1800);
-      };
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(summary).then(done).catch(function(){ fallbackCopy(summary); done(); });
-      } else {
-        fallbackCopy(summary); done();
-      }
-    };
-  }
-
-  function fallbackCopy(text){
-    var ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.focus(); ta.select();
-    try{ document.execCommand('copy'); }catch(e){}
-    document.body.removeChild(ta);
   }
 
   showStep(1);
