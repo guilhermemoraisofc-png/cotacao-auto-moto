@@ -1401,14 +1401,38 @@
     });
   }
 
+  // WhatsApp não renderiza HTML/CSS — só entende *negrito*, _itálico_,
+  // ~tachado~ e ``` monoespaçado ```. Pra chegar visualmente perto da tela de
+  // revisão (que é HTML/CSS de verdade), usamos essa formatação própria do
+  // WhatsApp: título em negrito com emoji, uma linha separadora entre blocos,
+  // e cada resposta em negrito só no rótulo — é o máximo de "bonito" que dá
+  // pra fazer em uma mensagem de texto puro.
+  var GROUP_ICONS = {
+    'TIPO DE SEGURO': '📋',
+    'DADOS DO SEGURADO': '👤',
+    'CONDUTOR PRINCIPAL': '🧍',
+    'DADOS DO VEÍCULO': '🚗',
+    'USO DO VEÍCULO': '🛣️',
+    'COBERTURAS': '🛡️'
+  };
+  var SEPARADOR = '──────────────────';
+
   function buildPlainSummary(groups){
-    var out = 'COTAÇÃO DE SEGURO AUTO/MOTO — ARCA SEGUROS\n';
-    out += '================================================\n\n';
+    var agora = new Date();
+    var dataHora = agora.toLocaleDateString('pt-BR') + ' às ' + agora.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+    var out = '🚗 *NOVA COTAÇÃO — ARCA SEGUROS*\n';
+    out += '_Recebida em ' + dataHora + '_\n';
     groups.forEach(function(g){
-      out += g[0] + '\n';
-      g[2].forEach(function(row){ out += '  ' + row[0] + ': ' + row[1] + '\n'; });
-      out += '\n';
+      var icone = GROUP_ICONS[g[0]] || '▪️';
+      out += '\n' + SEPARADOR + '\n';
+      out += icone + ' *' + g[0] + '*\n';
+      g[2].forEach(function(row){
+        var rotulo = /[?]\s*$/.test(row[0]) ? row[0] : row[0] + ':';
+        out += '• *' + rotulo + '* ' + row[1] + '\n';
+      });
     });
+    out += '\n' + SEPARADOR + '\n';
+    out += '_Cotação gerada pelo formulário online da Arca Seguros._';
     return out;
   }
 
